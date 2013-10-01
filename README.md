@@ -1,12 +1,12 @@
-scoop-deployment-script-development
-===================================
+devops
+======
 
 Temporary git repo for scripts in development for server configuration
 and deployment.
 
 Scripts used in this order:
-  setup-base.sh
-  setup-scoophealth.sh
-  setup-oscar12.sh
-  setup-tunnels.sh
-  setup-gateway-monit.sh
+  1 setup-base.sh
+  1 setup-scoophealth.sh
+  1 setup-oscar12.sh
+  1 setup-tunnels.sh
+  1 setup-gateway-monit.sh
