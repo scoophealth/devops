@@ -46,7 +46,24 @@ cat >> ~/.bashrc <<'EOF'
 shopt -s direxpand
 EOF
 #
+##
+## add some git aliases
+##
+if [ ! -f $HOME/.gitconfig ]
+then
+  cat > $HOME/.gitconfig << 'EOF'
+[alias]
+  co = checkout
+  ci = commit
+  st = status
+  br = branch
+  lg = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+  type = cat-file -t
+  dump = cat-file -p
+EOF
+fi
 #
+##
 sudo bash -c "cat >> /etc/network/interfaces" <<'EOF'
 
 ## Template for adding static virtual interface

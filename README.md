@@ -10,3 +10,4 @@ Scripts used in this order:
   3. setup-oscar12.sh
   4. setup-tunnels.sh
   5. setup-gateway-monit.sh
+  6. setup-hub-monit.sh

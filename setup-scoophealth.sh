@@ -5,6 +5,7 @@ if [ -f ".bash_profile" ]
 then
   source ~/.bash_profile
 else
+  echo "Run setup-base.sh before running this script."
   exit
 fi
 #
