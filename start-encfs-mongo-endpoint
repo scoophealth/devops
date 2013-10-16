@@ -1,0 +1,26 @@
+#!/bin/bash
+# It is assumed that the mongodb has been moved to an encrypted filesystem.
+# To do that, first quit monitoring query-gateway, stop monit,
+# then gateway software and mongodb:
+#   $ sudo monit unmonitor query-gateway
+#   $ sudo /etc/init.d/monit stop
+#   $ sudo /home/scoopadmin/bin/stop-endpoint.sh 
+#   $ sudo service mongodb stop
+# Next move mongodb to encrypted filesystem
+#   $ sudo mv /var/lib/mongodb/ /var/lib/mongodb-orig
+#   $ sudo encfs --public /var/lib/mongodb.encfs /var/lib/mongodb
+#    (Answer questions and set passphrase)
+#   $ sudo rsync -av /var/lib/mongodb-orig/ /var/lib/mongodb/
+# The files appear unencrypted in /var/lib/mongodb after a passphrase has
+# been entered.  Otherwhise, /var/lib/mongodb is empty.
+# The encrypted filesystem can be unmounted using:
+#   $ fusermount -u /var/lib/mongodb
+# Restart monit (query-gateway will be unmonitored initially)
+#   $ sudo /etc/init.d/monit start
+#
+sudo /usr/bin/encfs --public /var/lib/mongodb.encfs /var/lib/mongodb && sudo initctl start mongodb && sudo monit start query-gateway
+
+# Before shutdown query-gateway needs to be set unmonitored
+# This can be done by adding the following line to the stop section of
+# /etc/init.d/monit:
+#   /usr/bin/monit unmonitor query-gateway
