@@ -21,7 +21,7 @@
 # The query-gateway logs, which might have sensitive information, can
 # also be kept in the encrypted /var/lib/mongodb filesystem:
 #   $ cd ~/endpoint/query-gateway
-#   $ mv log /var/lib/mongodb/endpoint-log
+#   $ sudo mv log /var/lib/mongodb/endpoint-log
 #   $ ln -s /var/lib/mongodb/endpoint-log ./log
 #
 sudo /usr/bin/encfs --public /var/lib/mongodb.encfs /var/lib/mongodb && sudo initctl start mongodb && sudo monit start query-gateway
