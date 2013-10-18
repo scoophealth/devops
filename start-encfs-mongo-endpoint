@@ -12,15 +12,21 @@
 #    (Answer questions and set passphrase)
 #   $ sudo rsync -av /var/lib/mongodb-orig/ /var/lib/mongodb/
 # The files appear unencrypted in /var/lib/mongodb after a passphrase has
-# been entered.  Otherwhise, /var/lib/mongodb is empty.
+# been entered.  Otherwise, /var/lib/mongodb is empty.
 # The encrypted filesystem can be unmounted using:
 #   $ fusermount -u /var/lib/mongodb
 # Restart monit (query-gateway will be unmonitored initially)
 #   $ sudo /etc/init.d/monit start
 #
+# The query-gateway logs, which might have sensitive information, can
+# also be kept in the encrypted /var/lib/mongodb filesystem:
+#   $ cd ~/endpoint/query-gateway
+#   $ mv log /var/lib/mongodb/endpoint-log
+#   $ ln -s /var/lib/mongodb/endpoint-log ./log
+#
 sudo /usr/bin/encfs --public /var/lib/mongodb.encfs /var/lib/mongodb && sudo initctl start mongodb && sudo monit start query-gateway
-
+#
 # Before shutdown query-gateway needs to be set unmonitored
 # This can be done by adding the following line to the stop section of
 # /etc/init.d/monit:
-#   /usr/bin/monit unmonitor query-gateway
+#   $ /usr/bin/monit unmonitor query-gateway
