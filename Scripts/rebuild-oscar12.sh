@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# in case we want to run this from monit set up environment correctly
+# In case we want to run this from monit set up environment correctly
 HOME=/home/scoopadmin
 source $HOME/.bashrc
 if [ -z "$CATALINA_BASE" ]
@@ -14,17 +14,17 @@ then
   echo "No Oscar source found.  Exiting..."
   exit
 fi
+# Stop tomcat while redeploying Oscar
 sudo /etc/init.d/tomcat6 stop
+# Update to latest scoop-deploy build
 cd $HOME/emr/oscar
+git fetch origin
 git checkout scoop-deploy
-git pull
-#
-# build Oscar from source
+git reset --hard origin/scoop-deploy
+# Build Oscar from source
 export CATALINA_HOME
-mvn -Dmaven.test.skip=true verify
-# stop tomcat while redeploying Oscar
+mvn -Dmaven.test.skip=true clean verify
 sudo cp ./target/*.war $CATALINA_BASE/webapps/oscar12.war
-#
 # build oscar_documents from source
 if [ ! -d $HOME/emr/oscar_documents ]
 then
@@ -35,7 +35,5 @@ else
   mvn -Dmaven.test.skip=true clean package
   sudo cp ./target/*.war $CATALINA_BASE/webapps/OscarDocument.war
 fi
-#
-# restart tomcat
+# Restart Tomcat
 sudo /etc/init.d/tomcat6 start
-#
