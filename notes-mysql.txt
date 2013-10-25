@@ -1,0 +1,39 @@
+Adding user accounts is described at 
+http://dev.mysql.com/doc/refman/4.1/en/adding-users.html
+
+Connecting to the MySQL server remotely is explained at
+http://dev.mysql.com/doc/refman/5.0/en/connecting.html
+
+Creation of read-only account:
+
+mysql> create user 'scoophealth'@'endpoint.theirdomain' IDENTIFIED BY 'our_assigned_password'
+
+mysql> grant select on OSCAR12.* to 'scoophealth'@'endpoint.theirdomain';
+
+mysql> show grants for 'scoophealth'@'localhost';
+mysql> show grants for 'scoophealth'@'%';
+
+Removal of account:
+
+mysql> drop user 'scoophealth'@'localhost';
+mysql> drop user 'scoophealth'@'%';
+
+By default, mysqld will only bind to 127.0.0.1 on Ubuntu server.  To enable
+remote address comment out the line "bind-address = 127.0.0.1".
+
+A typical Java JDBC connection configuration for the EMR Oscar 12
+would look something like this:
+---------------
+# mysql database name
+db_name = oscar_12_1
+
+# username
+db_username = userx
+
+# password for the username above
+db_password=passwd4userx
+
+db_type = mysql
+db_driver = com.mysql.jdbc.Driver
+db_uri = jdbc:mysql://db-host.domain-name:3306/
+---------------

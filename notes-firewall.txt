@@ -1,0 +1,8 @@
+From https://help.ubuntu.com/lts/serverguide/firewall.html
+and https://wiki.ubuntu.com/UncomplicatedFirewall
+
+1. sudo ufw allow 22
+   or
+   sudo ufw allow ssh/tcp
+2. sudo ufw enable
+3. sudo ufw status

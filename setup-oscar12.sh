@@ -1,10 +1,7 @@
 #!/bin/bash
-if [ -z "$1" ]
-then
-  echo "Usage: setup-oscar.sh oscar_password"
-  exit
-fi
-oscar_passwd=$1
+#
+echo -n "Enter Oscar password: "
+read oscar_passwd
 echo "Create Oscar database with password $oscar_passwd"
 #
 
@@ -93,12 +90,12 @@ export PASSWORD=$oscar_passwd
 cd $HOME
 if [ ! -f $CATALINA_HOME/oscar12.properties ]
 then
-  if [ ! -f ./oscar-env-bc-subs.txt ]
+  if [ ! -f ./oscar-env-bc-subs.sed ]
   then
     echo "ERROR: sedscript is missing!"
     exit
   fi
-  sed -f ./oscar-env-bc-subs.txt < $HOME/emr/oscar/src/main/resources/oscar_mcmaster.properties > /tmp/oscar12.properties
+  sed -f ./oscar-env-bc-subs.sed < $HOME/emr/oscar/src/main/resources/oscar_mcmaster.properties > /tmp/oscar12.properties
   echo "ModuleNames=E2E" >> /tmp/oscar12.properties
   echo "E2E_URL = http://localhost:3001/records/create" >> /tmp/oscar12.properties
   echo "drugref_url=http://localhost:8080/drugref/DrugrefService" >> /tmp/oscar12.properties

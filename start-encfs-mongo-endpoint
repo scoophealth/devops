@@ -7,24 +7,28 @@
 #   $ sudo /home/scoopadmin/bin/stop-endpoint.sh 
 #   $ sudo service mongodb stop
 # Next move mongodb to encrypted filesystem
-#   $ sudo mv /var/lib/mongodb/ /var/lib/mongodb-orig
-#   $ sudo encfs --public /var/lib/mongodb.encfs /var/lib/mongodb
+#   $ sudo encfs --public /.encrypted /encrypted
 #    (Answer questions and set passphrase)
-#   $ sudo rsync -av /var/lib/mongodb-orig/ /var/lib/mongodb/
-# The files appear unencrypted in /var/lib/mongodb after a passphrase has
-# been entered.  Otherwise, /var/lib/mongodb is empty.
+#   $ sudo rsync -av /var/lib/mongodb /encrypted/mongodb
+# The files appear unencrypted in /encrypted/mongodb after a passphrase has
+# been entered.  Otherwise, /encrypted/mongodb is empty.
 # The encrypted filesystem can be unmounted using:
-#   $ fusermount -u /var/lib/mongodb
+#   $ fusermount -u /encrypted
+#
+# IMPORTANT:  The file /etc/mongodb.conf must be modified so that the
+# database looks for the database files in /encrypted/mongodb rather than
+# /var/lib/mongodb.  Modify dbpath accordingly.
+#
 # Restart monit (query-gateway will be unmonitored initially)
 #   $ sudo /etc/init.d/monit start
 #
 # The query-gateway logs, which might have sensitive information, can
-# also be kept in the encrypted /var/lib/mongodb filesystem:
+# also be kept in the /encrypted filesystem:
 #   $ cd ~/endpoint/query-gateway
-#   $ sudo mv log /var/lib/mongodb/endpoint-log
-#   $ ln -s /var/lib/mongodb/endpoint-log ./log
+#   $ sudo mv log /encrypted/mongodb/endpoint-log
+#   $ ln -s /encrypted/mongodb/endpoint-log ./log
 #
-sudo /usr/bin/encfs --public /var/lib/mongodb.encfs /var/lib/mongodb && sudo initctl start mongodb && sudo monit start query-gateway
+sudo /usr/bin/encfs --public /.encrypted /encrypted && sudo initctl start mongodb && sudo monit start query-gateway
 #
 # Before shutdown query-gateway needs to be set unmonitored
 # This can be done by adding the following line to the stop section of

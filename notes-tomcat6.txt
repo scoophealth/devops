@@ -1,0 +1,12 @@
+Since the Oscar properties file is kept in an encrypted filesystem, tomcat6
+must be started manually after the filesystem is unlocked.
+
+To stop tomcat6 from starting on system boot, make sure that these startup
+files are removed (but leave the shutdown files):
+
+/etc/rc2.d/S92tomcat6
+/etc/rc3.d/S92tomcat6
+/etc/rc4.d/S92tomcat6
+/etc/rc5.d/S92tomcat6
+
+Remove them using: sudo rm /etc/rc?.d/S92tomcat6

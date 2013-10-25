@@ -1,12 +1,13 @@
 #!/bin/sh
-if [ -z "$3" ]
+if [ -z "$2" ]
 then
-  echo "Usage: $0 password dbname dump_file"
+  echo "Usage: $0 dbname dump_file"
   exit
 fi
-PASSWD=$1
-DBNAME=$2
-DUMPFILE=$3
+DBNAME=$1
+DUMPFILE=$2
+echo -n "Enter MySQL user account password: "
+read PASSWD
 #
 # stop Oscar access to database
 sudo /etc/init.d/tomcat6 stop
