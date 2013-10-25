@@ -1,0 +1,14 @@
+Based on discussion at http://www.cyberciti.biz/faq/clear-the-shell-history-in-ubuntu-linux/
+
+1) Clear bash shell history
+$ history -c
+
+2) Remove history file
+$ rm ~/.bash_history
+
+3) Add 'history -c' to end of ~/.bash_logout
+$ echo 'history -c' >> ~/.bash_logout
+
+4) Modify HISTFILE and LESSHISTFILE to prevent history file creation
+$ echo 'unset HISTFILE' >> ~/.bashrc
+$ echo 'export LESSHISTFILE="-"' >> ~/.bashrc
