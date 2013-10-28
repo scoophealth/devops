@@ -1,11 +1,11 @@
 #!/bin/bash
 if [ -x "/usr/bin/autossh" ]
 then
-  sudo apt-get --yes autossh
+  sudo apt-get --yes install autossh
 fi
 if [ -x "/usr/bin/monit" ]
 then
-  sudo apt-get --yes monit
+  sudo apt-get --yes install monit
 fi
 if [ -z "$1" ]
 then
