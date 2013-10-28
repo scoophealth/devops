@@ -4,6 +4,7 @@ then
   sudo apt-get --yes autossh
 fi
 if [ -f /usr/bin/monit ]
+then
   sudo apt-get --yes monit
 fi
 if [ -z "$1" ]
