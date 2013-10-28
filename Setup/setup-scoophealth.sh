@@ -25,6 +25,7 @@ then
 fi
 cd $HOME
 if [ ! -d hub ]
+then
   mkdir hub
 fi
 cd hub
