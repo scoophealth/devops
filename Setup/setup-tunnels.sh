@@ -86,7 +86,7 @@ check process autossh_endpoint with pidfile /usr/local/reverse_ssh/autossh_endpo
 EOF6
 #
 #
-if grep --quiet "set httpd port 2812" /etc/monit/monitrc; then
+if sudo bash -c 'grep --quiet "^set httpd port 2812" /etc/monit/monitrc'; then
   ; # do nothing
 else
   # don't indent the here document
