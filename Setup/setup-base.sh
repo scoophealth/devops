@@ -45,7 +45,14 @@ sudo apt-get --yes install libxslt-dev libxml2-dev
 #
 # other useful packages (Note: screen and script are installed
 # in Ubuntu server by default; if they are missing install them)
-sudo apt-get --yes install lynx-cur tshark screen script autossh monit encfs
+# handle packages separately in case some are no longer in repo
+sudo apt-get --yes install lynx-cur
+sudo apt-get --yes install tshark
+sudo apt-get --yes install screen
+sudo apt-get --yes install script
+sudo apt-get --yes install autossh
+sudo apt-get --yes install monit
+sudo apt-get --yes install encfs
 #
 cat >> ~/.bashrc <<'EOF'
 #
