@@ -91,7 +91,7 @@ then
   echo '/etc/monit/monitrc already setup for CLI access'
 else
   # don't indent the here document
-  sudo bash -c "cat > /etc/monit/monitrc" << 'EOF7'
+  sudo bash -c "cat >> /etc/monit/monitrc" << 'EOF7'
 #
 # needed so that monit command-line tools will work
 set httpd port 2812 and
