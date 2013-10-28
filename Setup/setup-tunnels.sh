@@ -1,9 +1,9 @@
 #!/bin/bash
-if [ -f /usr/bin/autossh ]
+if [ -x /usr/bin/autossh ]
 then
   sudo apt-get --yes autossh
 fi
-if [ -f /usr/bin/monit ]
+if [ -x /usr/bin/monit ]
 then
   sudo apt-get --yes monit
 fi
