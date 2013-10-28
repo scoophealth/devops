@@ -49,19 +49,20 @@ cd $HOME/emr
 # retrieve Oscar from github
 if [ ! -d ./oscar ]
 then
-  git clone git://github.com/scoophealth/oscar.git
+  git clone -b scoop-deploy git://github.com/scoophealth/oscar.git
 fi
 if [ ! -d ./oscar ]
 then
   exit
 fi
 cd ./oscar
+git fetch origin
 git checkout scoop-deploy
-git pull
+git reset --hard origin/scoop-deploy
 #
 # build Oscar from source
 export CATALINA_HOME
-mvn -Dmaven.test.skip=true verify
+mvn -Dmaven.test.skip=true clean verify
 sudo cp ./target/*.war $CATALINA_BASE/webapps/oscar12.war
 #
 # build oscar_documents from source
