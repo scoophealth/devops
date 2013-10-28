@@ -4,6 +4,13 @@
 sudo apt-get --yes update
 sudo apt-get --yes upgrade
 #
+##
+sudo bash -c "cat >> /etc/ssh/sshd_config" <<'EOF'
+
+# Added to speed up login (Raymond Rusk, Scoophealth)
+UseDNS no
+EOF
+
 # install basic packages
 sudo apt-get --yes install git python-software-properties curl
 #
@@ -38,7 +45,7 @@ sudo apt-get --yes install libxslt-dev libxml2-dev
 #
 # other useful packages (Note: screen and script are installed
 # in Ubuntu server by default; if they are missing install them)
-sudo apt-get --yes install lynx-cur tshark screen script autossh monit
+sudo apt-get --yes install lynx-cur tshark screen script autossh monit encfs
 #
 cat >> ~/.bashrc <<'EOF'
 #
