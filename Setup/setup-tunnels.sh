@@ -1,4 +1,11 @@
 #!/bin/bash
+if [ -f /usr/bin/autossh ]
+then
+  sudo apt-get --yes autossh
+fi
+if [ -f /usr/bin/monit ]
+  sudo apt-get --yes monit
+fi
 if [ -z "$1" ]
 then
   echo "Usage: setup-tunnels.sh gatewayID"
