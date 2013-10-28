@@ -85,6 +85,20 @@ check process autossh_endpoint with pidfile /usr/local/reverse_ssh/autossh_endpo
     if 100 restarts within 100 cycles then timeout
 EOF6
 #
+#
+if grep --quiet "set httpd port 2812" /etc/monit/monitrc; then
+  ; # do nothing
+else
+  # don't indent the here document
+  sudo bash -c "cat > /etc/monit/monitrc" << 'EOF7'
+#
+# needed so that monit command-line tools will work
+set httpd port 2812 and
+use address localhost
+allow localhost
+EOF7
+fi
+#
 sudo /etc/init.d/monit restart
 #
 echo
