@@ -87,7 +87,7 @@ EOF6
 #
 #
 if sudo bash -c 'grep --quiet "^set httpd port 2812" /etc/monit/monitrc'; then
-  ; # do nothing
+  # do nothing
 else
   # don't indent the here document
   sudo bash -c "cat > /etc/monit/monitrc" << 'EOF7'
