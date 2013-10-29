@@ -1,5 +1,7 @@
 #!/bin/bash
 #
+set -e  # exit on error"
+#
 echo -n "Enter Oscar password: "
 read oscar_passwd
 echo "Create Oscar database with password $oscar_passwd"
@@ -11,15 +13,22 @@ if [ ! -d /var/lib/mysql ]
 then
   sudo apt-get --yes install mysql-server libmysql-java
 fi
+#
+# setup JAVA_HOME
+if ! grep --quiet "JAVA_HOME" /etc/environment
+then
+  sudo bash -c 'echo JAVA_HOME=\"/usr/lib/jvm/java-6-oracle\" >> /etc/environment'
+fi
+export JAVA_HOME="/usr/lib/jvm/java-6-oracle"
+#
 # install Tomcat and Maven
-if [ ! -d /var/lib/tomcat6 ]
+if ! grep --quiet "CATALINA_BASE" /etc/environment
 then
   sudo apt-get --yes install tomcat6 maven git-core
   #
   # set up Tomcat's deployment environment
   # Do not indent body of HERE document!
   sudo bash -c "cat  >> /etc/environment" <<'EOF'
-JAVA_HOME="/usr/lib/jvm/java-6-oracle"
 CATALINA_HOME="/usr/share/tomcat6"
 CATALINA_BASE="/var/lib/tomcat6"
 ANT_HOME="/usr/share/ant"
@@ -28,10 +37,13 @@ EOF
 fi
 #
 grep -v PATH /etc/environment >> ~/.bashrc
+echo "export JAVA_HOME CATALINA_HOME CATALINA_BASE ANT_HOME" >> ~/.bashrc
 source ~/.bashrc
+export CATALINA_HOME="/usr/share/tomcat6"
+export CATALINA_BASE="/var/lib/tomcat6"
 if [ -z "$CATALINA_BASE" ]
 then
-  echo "Failed to configure CATALINA_HOME in /etc/environment.  Exiting..."
+  echo "Failed to configure CATALINA_BASE in /etc/environment.  Exiting..."
   exit
 fi
 #
@@ -62,7 +74,7 @@ git reset --hard origin/scoop-deploy
 #
 # build Oscar from source
 export CATALINA_HOME
-mvn -Dmaven.test.skip=true clean verify
+mvn -Dmaven.test.skip=true clean package verify
 sudo cp ./target/*.war $CATALINA_BASE/webapps/oscar12.war
 #
 # build oscar_documents from source

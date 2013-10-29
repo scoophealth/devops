@@ -1,5 +1,7 @@
 #!/bin/bash
 #
+set -e # exit on errors
+#
 # bring up to date
 sudo apt-get --yes update
 sudo apt-get --yes upgrade

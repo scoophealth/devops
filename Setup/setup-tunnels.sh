@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+set -e # exit on errors
+#
 if [ ! -x "/usr/bin/autossh" ]
 then
   sudo apt-get --yes install autossh
