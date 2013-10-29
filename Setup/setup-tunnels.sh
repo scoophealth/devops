@@ -16,18 +16,18 @@ fi
 gatewayID=$1
 #
 echo
-if [ ! -d /home/autossh/.ssh ]
-then
-  echo "Creating unprivileged user account <autossh> for reverse ssh tunnelling"
-  echo "The root user public rsa key for each endpoint must be added to "
-  echo "/home/autossh/.ssh/authorized_keys on the hub."
-  sudo adduser --disabled-password autossh
-  sudo mkdir /home/autossh/.ssh
-  sudo touch /home/autossh/.ssh/authorized_keys
-  #sudo vi /home/autossh/.ssh/authorized_keys
-  sudo chmod -R go-rwx /home/autossh/.ssh
-  sudo chown -R autossh:autossh /home/autossh/.ssh
-fi
+#if [ ! -d /home/autossh/.ssh ]
+#then
+#  echo "Creating unprivileged user account <autossh> for reverse ssh tunnelling"
+#  echo "The root user public rsa key for each endpoint must be added to "
+#  echo "/home/autossh/.ssh/authorized_keys on the hub."
+#  sudo adduser --disabled-password autossh
+#  sudo mkdir /home/autossh/.ssh
+#  sudo touch /home/autossh/.ssh/authorized_keys
+#  #sudo vi /home/autossh/.ssh/authorized_keys
+#  sudo chmod -R go-rwx /home/autossh/.ssh
+#  sudo chown -R autossh:autossh /home/autossh/.ssh
+#fi
 #
 if [ ! -d /usr/local/reverse_ssh/bin ]
 then
@@ -98,6 +98,33 @@ set httpd port 2812 and
 use address localhost
 allow localhost
 EOF7
+fi
+#
+if sudo test -f "/var/spool/cron/crontabs/root"
+then
+  if sudo bash -c 'grep --quiet autossh_admin /var/spool/cron/crontabs/root'
+  then
+    echo 'root cron already set to restart auto_ssh'
+  else
+    echo 'adding monit start autossh_admin to root crontab'
+    sudo crontab -u root -l /root/crontab.root
+    # don't indent here document below
+    sudo bash -c "cat >> /root/crontab.root" << 'EOF8'
+# Run five minutes after hour, every day
+# Provides automatic recovery if monit unmonitors autossh_admin
+5 * * * *  /usr/bin/monit start autossh_admin >> /var/log/monit-cron.log 2>&1
+EOF8
+    sudo crontab -u root /root/crontab.root
+  fi
+else
+  echo 'creating root crontab with monit start autossh_admin
+  # don't indent here document below
+  sudo bash -c "cat > /root/crontab.root" << 'EOF9'
+# Run five minutes after hour, every day
+# Provides automatic recovery if monit unmonitors autossh_admin
+5 * * * *  /usr/bin/monit start autossh_admin >> /var/log/monit-cron.log 2>&1
+EOF9
+    sudo crontab -u root /root/crontab.root
 fi
 #
 sudo /etc/init.d/monit restart
