@@ -74,6 +74,11 @@ git reset --hard origin/scoop-deploy
 #
 # build Oscar from source
 export CATALINA_HOME
+#
+# This shouldn't be necessary but required in most recent deploys to avoid
+# missing dependencies
+rsync -av $HOME/emr/oscar/local_repo/ $HOME/.m2/repository/
+#
 mvn -Dmaven.test.skip=true clean verify
 sudo cp ./target/*.war $CATALINA_BASE/webapps/oscar12.war
 #
