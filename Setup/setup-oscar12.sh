@@ -74,7 +74,7 @@ git reset --hard origin/scoop-deploy
 #
 # build Oscar from source
 export CATALINA_HOME
-mvn -Dmaven.test.skip=true clean package verify
+mvn -Dmaven.test.skip=true clean verify
 sudo cp ./target/*.war $CATALINA_BASE/webapps/oscar12.war
 #
 # build oscar_documents from source
@@ -103,7 +103,7 @@ export PASSWORD=$oscar_passwd
 cd $HOME
 if [ ! -f $CATALINA_HOME/oscar12.properties ]
 then
-  if [ ! -f ./oscar-env-bc-subs.sed ]
+  if [ ! -f ./devops/Setup/oscar-env-bc-subs.sed ]
   then
     echo "ERROR: sedscript is missing!"
     exit
