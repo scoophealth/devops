@@ -56,7 +56,7 @@ sudo apt-get --yes install libxslt-dev libxml2-dev
 sudo apt-get --yes install lynx-cur
 sudo apt-get --yes install tshark
 sudo apt-get --yes install screen
-sudo apt-get --yes install script
+(sudo apt-get --yes install script) || true # make this not error out
 sudo apt-get --yes install autossh
 sudo apt-get --yes install monit
 sudo apt-get --yes install encfs
