@@ -7,12 +7,17 @@ sudo apt-get --yes update
 sudo apt-get --yes upgrade
 #
 ##
-sudo bash -c "cat >> /etc/ssh/sshd_config" <<'EOF'
+if ! grep --quiet "UseDNS no" /etc/ssh/sshd_config
+then
+  # don't indent here document below
+  sudo bash -c "cat >> /etc/ssh/sshd_config" <<'EOF'
 
 # Added to speed up login (Raymond Rusk, Scoophealth)
 UseDNS no
 EOF
-
+#
+fi
+#
 # install basic packages
 sudo apt-get --yes install git python-software-properties curl
 #
