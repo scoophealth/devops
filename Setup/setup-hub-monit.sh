@@ -1,5 +1,7 @@
 #!/bin/bash
 #
+set -e # exit on errors
+#
 ##
 ## Setup autossh account for reverse ssh from gateways
 ##

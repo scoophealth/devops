@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+set -e # exit on errors
+#
 cd $HOME
 #
 if [ -f ".bash_profile" ]
@@ -9,6 +12,7 @@ else
   exit
 fi
 #
+echo "Setting up endpoint (query-gateway) software"
 if [ ! -d endpoint ]
 then
   mkdir endpoint
@@ -23,6 +27,8 @@ if [ ! -d tmp/pids ]
 then
   mkdir -p tmp/pids
 fi
+#
+echo "Setting up hub (query-composer) software"
 cd $HOME
 if [ ! -d hub ]
 then

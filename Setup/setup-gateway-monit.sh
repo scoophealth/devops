@@ -1,5 +1,7 @@
 #!/bin/bash
 #
+set -e # exit on errors
+#
 ##
 ## Create bin/start-endpoint.sh
 ##
