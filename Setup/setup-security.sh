@@ -34,3 +34,11 @@ sudo ufw allow 22
 sudo ufw limit 22
 sudo ufw enable
 sudo ufw status verbose
+#
+### 3) Don't start Tomcat automatically since Oscar properties are kept
+# in an encypted filesystem.  Tomcat6 needs to be started manually after
+# the filesystem is unlocked.
+if [ -f /etc/rc5.d/S92tomcat6 ]
+then
+  sudo rm /etc/rc?.d/S92tomcat6
+fi
