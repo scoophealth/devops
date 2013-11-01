@@ -48,6 +48,33 @@ fi
 sudo sed --in-place "s/start on runlevel/#start on runlevel/" /etc/init/mongodb.conf
 #
 ### 5) The query-gateway cannot start until the mongodb database filesystem
-# has the encryption password entered manually so unmonitory query-gateway
-# before monit is shutdown during system shutdown or reboot
-sudo sed --in-place "s/stop\)/stop\)\n  /usr/bin/monit unmonitor query-gateway/" /etc/init/monit
+# has the encryption password entered manually so unmonitor query-gateway
+# before monit is shutdown during system shutdown or reboot.  This string
+# subsitution adds a line to unmonitor query-gateway in the stop) section
+# of /etc/init.d/monit.
+sudo sed --in-place "/stop)/{G;s/$/    \/usr\/bin\/monit unmonitor query-gateway/;}" /etc/init.d/monit
+#
+### 6) Move mongodb database to an encrypted filesystem.
+# First quit monitoring query-gateway, stop monit, then gateway software
+# and mongodb:
+if [ ! -d /encrypted ]
+then
+  sudo monit unmonitor query-gateway
+  sudo /etc/init.d/monit stop
+  /home/scoopadmin/bin/stop-endpoint.sh
+  sudo service mongodb stop
+  # Move mongodb to encrypted filesystem
+  echo "You need to set up passphrase now"
+  sudo encfs --public /.encrypted /encrypted
+  sudo rsync -av /var/lib/mongodb /encrypted
+  if [ ! -d /encrypted/mongodb ]
+  then
+    exit
+  fi
+  sudo sed --in-place "s/\/var\/lib\/mongodb/\/encrypted\/mongodb/" /etc/mongodb.conf
+  sudo /etc/init.d/monit start
+  cd ~/endpoint/query-gateway
+  sudo mv log /encrypted/endpoint-log
+  sudo ln -s /encrypted/endpoint-log ./log
+  echo "sudo /usr/bin/encfs --public /.encrypted /encrypted && sudo initctl start mongodb && sudo monit start query-gateway" > $HOME/start-encfs-mongo-endpoint
+fi
