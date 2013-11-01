@@ -46,3 +46,8 @@ fi
 ### 4) Don't start mongodb automatically during server startup since the
 # mongodb database is stored in an encrypted filesystem.
 sudo sed --in-place "s/start on runlevel/#start on runlevel/" /etc/init/mongodb.conf
+#
+### 5) The query-gateway cannot start until the mongodb database filesystem
+# has the encryption password entered manually so unmonitory query-gateway
+# before monit is shutdown during system shutdown or reboot
+sudo sed --in-place "s/stop\)/stop\)\n  /usr/bin/monit unmonitor query-gateway/" /etc/init/monit
