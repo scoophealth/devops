@@ -9,7 +9,10 @@ set -e # exit on errors
 # Clear bash shell history
 history -c
 # Remove history file
-rm ~/.bash_history
+if [ -f ~/.bash_history ]
+then
+  rm ~/.bash_history
+fi
 # Add 'history -c' to end of ~/.bash_logout
 touch ~/.bash_logout # create ~/.bash_logout if it doesn't exist
 if ! grep --quiet "history -c" ~/.bash_logout; then
