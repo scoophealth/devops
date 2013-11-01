@@ -42,3 +42,7 @@ if [ -f /etc/rc5.d/S92tomcat6 ]
 then
   sudo rm /etc/rc?.d/S92tomcat6
 fi
+#
+### 4) Don't start mongodb automatically during server startup since the
+# mongodb database is stored in an encrypted filesystem.
+sudo sed --in-place "s/start on runlevel/#start on runlevel/" /etc/init/mongodb.conf
