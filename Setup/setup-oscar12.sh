@@ -77,6 +77,7 @@ export CATALINA_HOME
 #
 # This shouldn't be necessary but required in most recent deploys to avoid
 # missing dependencies
+mkdir -p ~/.m2/repository
 rsync -av $HOME/emr/oscar/local_repo/ $HOME/.m2/repository/
 #
 mvn -Dmaven.test.skip=true clean verify
