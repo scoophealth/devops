@@ -22,3 +22,12 @@ fi
 if ! grep --quiet "export LESSHISTFILE" ~/.bashrc; then
   echo 'export LESSHISTFILE="-"' >> ~/.bashrc
 fi
+#
+### 2) Configure firewall
+# From https://help.ubuntu.com/lts/serverguide/firewall.html
+# and https://wiki.ubuntu.com/UncomplicatedFirewall
+#
+sudo ufw allow 22
+sudo ufw limit 22
+sudo ufw enable
+sudo ufw status verbose
