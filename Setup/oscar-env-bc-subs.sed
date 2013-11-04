@@ -11,3 +11,4 @@ s/^.*NEW_BC_TELEPLAN.*[:=].*$/NEW_BC_TELEPLAN=yes/
 s/^.*CDM_ALERTS.*[:=].*$/CDM_ALERTS=250,428,4280/
 s/^.*COUNSELING_CODES.*[:=].*$/COUNSELING_CODES=18220,18120,17220,17120,16220,16120,13220,12220,12120,00120/
 s/^.*phoneprefix.*[:=].*$/phoneprefix = 250-/
+/drugref_url/s/^/#/
