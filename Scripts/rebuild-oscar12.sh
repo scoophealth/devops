@@ -1,5 +1,7 @@
 #!/bin/bash
 #
+set -e # Exit on errors
+#
 # In case we want to run this from monit set up environment correctly
 HOME=/home/scoopadmin
 source $HOME/.bashrc
