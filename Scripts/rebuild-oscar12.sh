@@ -26,6 +26,10 @@ git reset --hard origin/scoop-deploy
 # Build Oscar from source
 export CATALINA_HOME
 mvn -Dmaven.test.skip=true clean verify
+# Clean out old oscar deployment
+sudo rm -rf $CATALINA_BASE/webapps/oscar12
+sudo rm $CATALINA_BASE/webapps/oscar12.war
+# Copy over new oscar war file
 sudo cp ./target/*.war $CATALINA_BASE/webapps/oscar12.war
 # build oscar_documents from source
 if [ ! -d $HOME/emr/oscar_documents ]
