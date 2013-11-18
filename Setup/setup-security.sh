@@ -67,8 +67,11 @@ then
   echo "You need to set up passphrase now"
   sudo encfs --public /.encrypted /encrypted
   sudo rsync -av /var/lib/mongodb /encrypted
+  sudo chmod a+rx /encrypted
+  sudo chmod a+rx /.encrypted
   if [ ! -d /encrypted/mongodb ]
   then
+    echo "Error occurred moving mongodb to encrypted filesystem"
     exit
   fi
   sudo sed --in-place "s/\/var\/lib\/mongodb/\/encrypted\/mongodb/" /etc/mongodb.conf
