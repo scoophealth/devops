@@ -87,9 +87,10 @@ fi
 ##
 sudo bash -c "cat >> /etc/network/interfaces" <<'EOF'
 
-## Template for adding static virtual interface
+## Template for adding static virtual interface.
 ## Uncomment the following lines and modify as
-## needed to create a static virtual interface
+## needed to create a static virtual interface.
+## For Ubuntu 12.04 leave gateway commented out.
 #auto eth0:0
 #iface eth0:0 inet static
 #  address 192.168.4.205
