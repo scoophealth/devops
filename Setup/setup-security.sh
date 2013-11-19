@@ -44,14 +44,17 @@ then
 fi
 #
 ### 4) Don't start mongodb automatically during server startup since the
-# mongodb database is stored in an encrypted filesystem.
+# mongodb database is stored in an encrypted filesystem.  Comment out the start on
+# runlevel line but leave the stop on runlevel so the database is shut down
+# gracefully during system shutdown, reducing the likelihood of database corruption.
 sudo sed --in-place "s/start on runlevel/#start on runlevel/" /etc/init/mongodb.conf
 #
 ### 5) The query-gateway cannot start until the mongodb database filesystem
 # has the encryption password entered manually so unmonitor query-gateway
 # before monit is shutdown during system shutdown or reboot.  This string
 # subsitution adds a line to unmonitor query-gateway in the stop) section
-# of /etc/init.d/monit.
+# of /etc/init.d/monit.  This is needed because the monitoring state is
+# persistent across Monit restarts
 sudo sed --in-place "/stop)/{G;s/$/    \/usr\/bin\/monit unmonitor query-gateway/;}" /etc/init.d/monit
 #
 ### 6) Move mongodb database to an encrypted filesystem.
@@ -80,4 +83,21 @@ then
   sudo mv log /encrypted/endpoint-log
   sudo ln -s /encrypted/endpoint-log ./log
   echo "sudo /usr/bin/encfs --public /.encrypted /encrypted && sudo initctl start mongodb && sudo monit start query-gateway" > $HOME/start-encfs-mongo-endpoint
+  cd $HOME
+  chmod a+x ./start-encfs-mongo-endpoint
 fi
+#
+### 6) Move the oscar properties file to the encrypted filesystem
+if [ -f $CATALINA_HOME/oscar12.properties ]
+then
+  if [ ! -h $CATALINA_HOME/oscar12.properties ]
+  then
+    cd $CATALINA_HOME
+    sudo mkdir /encrypted/oscar
+    sudo mv oscar12.properties /encrypted/oscar
+    sudo ln -s /encrypted/oscar/oscar12.properties ./oscar12.properties
+  fi
+fi
+echo
+echo "IMPORTANT: Do not forget the encfs password. If you wish to change it use the 'encfsctl' command."
+echo "The syntax looks like this: 'sudo encfsctl passwd /.encrypted'"
