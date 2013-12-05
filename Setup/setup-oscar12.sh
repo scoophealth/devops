@@ -117,6 +117,8 @@ then
   sed -f ./devops/Setup/oscar-env-bc-subs.sed < $HOME/emr/oscar/src/main/resources/oscar_mcmaster.properties > /tmp/oscar12.properties
   echo "ModuleNames=E2E" >> /tmp/oscar12.properties
   echo "E2E_URL = http://localhost:3001/records/create" >> /tmp/oscar12.properties
+  echo "E2E_DIFF = off" >> /tmp/oscar12.properties
+  echo "E2E_DIFF_DAYS = 14" >> /tmp/oscar12.properties
   echo "drugref_url=http://localhost:8080/drugref/DrugrefService" >> /tmp/oscar12.properties
   sed --in-place "s/db_password=xxxx/db_password=$oscar_passwd/" /tmp/oscar12.properties
   sudo cp /tmp/oscar12.properties $CATALINA_HOME/
