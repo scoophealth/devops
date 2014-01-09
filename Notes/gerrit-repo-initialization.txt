@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# https://gerrit-documentation.storage.googleapis.com/Documentation/2.7/install-quick.html
+#
+# Initial set up includes:
+#
+# 1) From an account with administrative privileges within Gerrit, run the following:
+#$ cat gerrit_id_rsa.pub | ssh -p 29418 gerrit.seng.uvic.ca gerrit create-account --ssh-key - gerrit2
+#
+# 2) Clone upstream repo:
+cd $HOME
+#$ git clone git://git.code.sf.net/p/oscarmcmaster/oscar
+#
+# 3) In cloned repo
+cd oscar
+#
+# 4) Set up push url
+#$ git remote add gerrit ssh://localhost:29418/seng371/oscar
+#$ ssh -p 29418 gerrit.seng.uvic.ca gerrit create-project seng371/oscar.git --description "'Oscar McMaster'"
+#
+# 5) Using Gerrit web interface, add gerrit2 to adminstrators on gerrit
+#
+echo `date`
+echo `pwd`
+git checkout master
+echo "Pulling master from sourceforge..."
+git pull
+echo "Pushing master to local Gerrit repo..."
+git push gerrit *:*
+
+git checkout RELEASE_12_1
+echo "Pulling RELEASE_12_1 form sourceforge..."
+git pull
+echo "Pushing RELEASE_12_1 to local Gerrit repo..."
+git push gerrit *:*

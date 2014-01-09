@@ -99,5 +99,6 @@ then
   fi
 fi
 echo
-echo "IMPORTANT: Do not forget the encfs password. If you wish to change it use the 'encfsctl' command."
-echo "The syntax looks like this: 'sudo encfsctl passwd /.encrypted'"
+echo "IMPORTANT: Do not forget the encfs password. If you wish to change"
+echo "it use the 'encfsctl' command.  The syntax looks like this:"
+echo "     sudo encfsctl passwd /.encrypted"
