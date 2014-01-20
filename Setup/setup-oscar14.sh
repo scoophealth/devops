@@ -108,7 +108,7 @@ export PASSWORD=$oscar_passwd
 cd $HOME
 if [ ! -f $CATALINA_HOME/oscar14.properties ]
 then
-  if [ ! -f ./devops/Setup/oscar-env-bc-subs.sed ]
+  if [ ! -f ./devops/Setup/oscar14-env-bc-subs.sed ]
   then
     echo "ERROR: sedscript is missing!"
     exit
