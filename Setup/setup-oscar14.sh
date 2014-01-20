@@ -113,7 +113,7 @@ then
     echo "ERROR: sedscript is missing!"
     exit
   fi
-  sed -f ./devops/Setup/oscar-env-bc-subs.sed < $HOME/git/oscar/src/main/resources/oscar_mcmaster.properties > /tmp/oscar14.properties
+  sed -f ./devops/Setup/oscar14-env-bc-subs.sed < $HOME/git/oscar/src/main/resources/oscar_mcmaster.properties > /tmp/oscar14.properties
   echo "ModuleNames=E2E" >> /tmp/oscar14.properties
   echo "E2E_URL = http://localhost:3001/records/create" >> /tmp/oscar14.properties
   echo "E2E_DIFF = off" >> /tmp/oscar14.properties
