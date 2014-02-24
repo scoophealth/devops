@@ -19,6 +19,7 @@ EOF
 fi
 #
 # install basic packages
+sudo apt-get --yes install ntp  # use ntpdate if clock skew is large
 sudo apt-get --yes install git python-software-properties curl
 #
 # set up Java 6
