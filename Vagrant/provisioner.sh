@@ -37,7 +37,7 @@ then
   gem install rails
 fi
 
-# intstall libraries needed by scoophealth software
+# install libraries needed by scoophealth software
 sudo apt-get --yes install libxslt-dev libxml2-dev
 
 # other useful packages (Note: screen and script are installed
@@ -47,6 +47,7 @@ sudo apt-get --yes install libxslt-dev libxml2-dev
 sudo apt-get --yes install lynx-cur tshark screen autossh monit encfs
 (sudo apt-get --yes install script) || true # make this not error out
 
+# This doesn't appear to be working at the moment
 #cat >> ~/.bashrc <<'EOF'
 #
 #http://askubuntu.com/questions/41891/bash-auto-complete-for-environment-variables/
