@@ -7,8 +7,8 @@ and deployment.
 Scripts used in this order:
   1. setup-base.sh
   2. setup-scoophealth.sh
-  3. setup-tunnels.sh
-  4. setup-oscar12.sh
+  3. setup-tunnels.sh (for endpoint servers)
+  4. setup-oscar12.sh (for endpoint servers at Oscar sites)
   5. setup-gateway-monit.sh (for endpoint servers)
   6. setup-hub-monit.sh (for hub server)
   7. setup-security.sh
