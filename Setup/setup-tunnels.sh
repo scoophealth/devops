@@ -2,6 +2,16 @@
 #
 set -e # exit on errors
 #
+if [ ! -d "$HOME/.ssh" ]
+then
+  echo "No ~/.ssh directory"
+  echo "Please read Server-Configuration.md in this repo."
+fi
+if [ ! -f "$HOME/.ssh/id_rsa.pub" ]
+then
+  echo "A public rsa key is needed to connect to hub."
+  echo "Please read Server-Configuration.md in this repo."
+fi
 if [ ! -x "/usr/bin/autossh" ]
 then
   sudo apt-get --yes install autossh
