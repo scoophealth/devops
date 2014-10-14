@@ -80,7 +80,14 @@ export CATALINA_HOME
 mkdir -p ~/.m2/repository
 rsync -av $HOME/emr/oscar/local_repo/ $HOME/.m2/repository/
 #
-mvn -Dmaven.test.skip=true clean verify
+# Missing validateXml option in Jasper with Tomcat 6.0.39-1 for Ubuntu 14.04LTS
+# Restored in Tomcat 6.0.40 according to http://tomcat.apache.org/tomcat-6.0-doc/changelog.html
+# With 6.0.39-1 get following error:
+#   oscar/jspc.xml:49: jasper doesn't support the "validateXml" attribute
+#   around Ant part ...<ant antfile="jspc.xml" target="jspc"/>... @ 5:42 in
+#   oscar/target/antrun/build-main.xml
+#mvn -Dmaven.test.skip=true clean verify
+mvn -Dmaven.test.skip=true -Dcheckstyle.skip=true -Dpmd.skip=true clean package
 sudo cp ./target/*.war $CATALINA_BASE/webapps/oscar12.war
 #
 # build oscar_documents from source
