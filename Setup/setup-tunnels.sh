@@ -17,7 +17,8 @@ fi
 # test where file can be copied to hub via ssh
 echo "The public rsa key must be copied to the hub before we can continue."
 echo "Checking that now..."
-sudo scp /root/.ssh/id_rsa.pub autossh@scoophub.cs.uvic.ca:/tmp/junk.txt
+hostname=`hostname`
+sudo scp /root/.ssh/id_rsa.pub autossh@scoophub.cs.uvic.ca:/tmp/"$hostname"_id_rsa.pub
 if [ ! $? -eq 0 ]
 then
   echo "Please read Server-Configuration.md in this repo."
