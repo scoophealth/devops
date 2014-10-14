@@ -19,6 +19,11 @@ if ! grep --quiet "JAVA_HOME" /etc/environment
 then
   sudo bash -c 'echo JAVA_HOME=\"/usr/lib/jvm/java-6-oracle\" >> /etc/environment'
 fi
+# Make sure tomcat6 finds right JAVA_HOME
+if ! grep --quiet "java-6-oracle" /etc/default/tomcat6
+then
+  sudo bash -c 'echo JAVA_HOME=\"/usr/lib/jvm/java-6-oracle\" >> /etc/default/tomcat6'
+fi
 export JAVA_HOME="/usr/lib/jvm/java-6-oracle"
 #
 # install Tomcat and Maven
@@ -109,6 +114,8 @@ mvn -Dmaven.test.skip=true clean package
 sudo cp ./target/*.war $CATALINA_BASE/webapps/OscarDocument.war
 #
 # create oscar database
+# first drop any old version
+mysql -uroot -p$oscar_paswd -e "DROP DATABASE IF EXISTS oscar_12_1;"
 cd $HOME/emr/oscar/database/mysql
 export PASSWORD=$oscar_passwd
 ./createdatabase_bc.sh root $PASSWORD oscar_12_1
@@ -159,6 +166,7 @@ EOF
 sudo sed --in-place "s/db_password=xxxx/db_password=$oscar_passwd/" $CATALINA_HOME/drugref.properties
 #
 # create a new database to hold the drugref.
+mysql -uroot -p$oscar_paswd -e "DROP DATABASE IF EXISTS drugref;"
 mysql -uroot -p$oscar_passwd -e "CREATE DATABASE drugref;"
 #
 # To apply all the changes to the Tomcat server, we need to restart it
