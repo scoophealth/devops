@@ -78,12 +78,14 @@ EOF
 #
 fi
 #
-# set up Oracle Java 7
+# set up Oracle Java 6 or 7 (problems with Oscar 12 and Java 7 so use 6 instead)
+# http://www.webupd8.org/2012/11/oracle-sun-java-6-installer-available.html
 # http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html
 sudo apt-get --yes install python-software-properties
 sudo add-apt-repository ppa:webupd8team/java
 sudo apt-get --yes update
-sudo apt-get --yes install oracle-java7-installer
+sudo apt-get --yes install oracle-java6-installer
+#sudo apt-get --yes install oracle-java7-installer
 
 # set up OpenJDK Java 7 (no headless version, installs many GUI packages)
 #sudo apt-get install openjdk-7-jdk
