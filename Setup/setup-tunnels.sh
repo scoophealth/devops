@@ -2,13 +2,13 @@
 #
 set -e # exit on errors
 #
-if [ ! -d "$HOME/.ssh" ]
+if sudo test ! -d "/root/.ssh"
 then
-  echo "No ~/.ssh directory"
+  echo "No /root/.ssh directory"
   echo "Please read Server-Configuration.md in this repo."
   exit
 fi
-if [ ! -f "$HOME/.ssh/id_rsa.pub" ]
+if sudo test ! -f "/root/.ssh/id_rsa.pub"
 then
   echo "A public rsa key is needed to connect to hub."
   echo "Please read Server-Configuration.md in this repo."
@@ -17,7 +17,7 @@ fi
 # test where file can be copied to hub via ssh
 echo "The public rsa key must be copied to the hub before we can continue."
 echo "Checking that now..."
-scp $HOME/devops/README.md autossh@scoophub.cs.uvic.ca:/tmp/junk.txt
+sudo test scp $HOME/devops/README.md autossh@scoophub.cs.uvic.ca:/tmp/junk.txt
 if [ ! $? -eq 0 ]
 then
   echo "Please read Server-Configuration.md in this repo."
