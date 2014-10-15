@@ -38,20 +38,21 @@ fi
 # Make sure tomcat6 finds right JAVA_HOME
 if ! grep --quiet "java-6-oracle" /etc/default/tomcat6
 then
-  sudo bash -c 'echo JAVA_HOME=\"/usr/lib/jvm/java-6-oracle\" >> /etc/default/tomcat6'
+  sudo bash -c 'echo JAVA_HOME=/usr/lib/jvm/java-6-oracle >> /etc/default/tomcat6'
 fi
+sudo /etc/init.d/tomcat6 restart
 #
 grep -v PATH /etc/environment >> ~/.bashrc
 echo "export JAVA_HOME CATALINA_HOME CATALINA_BASE ANT_HOME" >> ~/.bashrc
 source ~/.bashrc
-#export CATALINA_HOME="/usr/share/tomcat6"
-#export CATALINA_BASE="/var/lib/tomcat6"
-if [ -z "$CATALINA_BASE" ]
+#
+for line in $( cat /etc/environment|grep -v PATH ) ; do export $line ; done
+if [ -z "$CATALINA_BASE" -a -d "$CATALINA_BASE" ]
 then
   echo "Failed to configure CATALINA_BASE in /etc/environment.  Exiting..."
   exit
 fi
-if [ -z "$CATALINA_HOME" ]
+if [ -z "$CATALINA_HOME" -a -d "$CATALINA_HOME" ]
 then
   echo "Failed to configure CATALINA_HOME in /etc/environment.  Exiting..."
   exit
@@ -83,7 +84,11 @@ git checkout scoop-deploy
 git reset --hard origin/scoop-deploy
 #
 # build Oscar from source
-export CATALINA_HOME
+# These environment variables somehow are not set properly
+# at this point so setting them again explicitly.
+export JAVA_HOME="/usr/lib/jvm/java-6-oracle"
+export CATALINA_HOME="/usr/share/tomcat6"
+export CATALINA_BASE="/var/lib/tomcat6"
 #
 # This shouldn't be necessary but required in most recent deploys to avoid
 # missing dependencies
