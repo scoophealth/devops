@@ -19,11 +19,6 @@ if ! grep --quiet "JAVA_HOME" /etc/environment
 then
   sudo bash -c 'echo JAVA_HOME=\"/usr/lib/jvm/java-6-oracle\" >> /etc/environment'
 fi
-# Make sure tomcat6 finds right JAVA_HOME
-if ! grep --quiet "java-6-oracle" /etc/default/tomcat6
-then
-  sudo bash -c 'echo JAVA_HOME=\"/usr/lib/jvm/java-6-oracle\" >> /etc/default/tomcat6'
-fi
 export JAVA_HOME="/usr/lib/jvm/java-6-oracle"
 #
 # install Tomcat and Maven
@@ -40,15 +35,25 @@ ANT_HOME="/usr/share/ant"
 EOF
 #
 fi
+# Make sure tomcat6 finds right JAVA_HOME
+if ! grep --quiet "java-6-oracle" /etc/default/tomcat6
+then
+  sudo bash -c 'echo JAVA_HOME=\"/usr/lib/jvm/java-6-oracle\" >> /etc/default/tomcat6'
+fi
 #
 grep -v PATH /etc/environment >> ~/.bashrc
 echo "export JAVA_HOME CATALINA_HOME CATALINA_BASE ANT_HOME" >> ~/.bashrc
 source ~/.bashrc
-export CATALINA_HOME="/usr/share/tomcat6"
-export CATALINA_BASE="/var/lib/tomcat6"
+#export CATALINA_HOME="/usr/share/tomcat6"
+#export CATALINA_BASE="/var/lib/tomcat6"
 if [ -z "$CATALINA_BASE" ]
 then
   echo "Failed to configure CATALINA_BASE in /etc/environment.  Exiting..."
+  exit
+fi
+if [ -z "$CATALINA_HOME" ]
+then
+  echo "Failed to configure CATALINA_HOME in /etc/environment.  Exiting..."
   exit
 fi
 #
