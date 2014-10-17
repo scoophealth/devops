@@ -82,6 +82,18 @@ cd ./oscar
 git fetch origin
 git checkout scoop-deploy
 git reset --hard origin/scoop-deploy
+# Tomcat versions 6.0.38 and 6.0.39 renamed the validateXml attribute
+# to validateTld causing build errors like this:
+# [ERROR] BUILD ERROR
+# [INFO]
+# ------------------------------------------------------------------------
+# [INFO] An Ant BuildException has occured: The following error occurred
+# while executing this line:
+# jspc.xml:49: jasper doesn't support the "validateXml" attribute
+# around Ant part ...<ant antfile="jspc.xml" target="jspc"/>... @ 5:42 in
+# target/antrun/build-main.xml
+sed -i 's/validateXml="false"//' jspc.xml
+# Note Ubuntu 14.04 deploys Tomcat 6.0.39 by default as of Oct 2014
 #
 # build Oscar from source
 # These environment variables somehow are not set properly
@@ -89,6 +101,13 @@ git reset --hard origin/scoop-deploy
 export JAVA_HOME="/usr/lib/jvm/java-6-oracle"
 export CATALINA_HOME="/usr/share/tomcat6"
 export CATALINA_BASE="/var/lib/tomcat6"
+#
+# Patch to catalina-tasks.xml
+# (See https://issues.apache.org/bugzilla/show_bug.cgi?id=56560)
+if ! grep --quiet "tomcat-coyote.jar" $CATALINA_HOME/bin/catalina-tasks.xml
+then
+  sed -i '/<fileset file="${catalina.home}\/lib\/servlet-api.jar"\/>/a<fileset file="${catalina.home}\/lib\/tomcat-coyote.jar"\/>' $CATALINA_HOME/bin/catalina-tasks.xml
+fi
 #
 # This shouldn't be necessary but required in most recent deploys to avoid
 # missing dependencies
@@ -101,8 +120,7 @@ rsync -av $HOME/emr/oscar/local_repo/ $HOME/.m2/repository/
 #   oscar/jspc.xml:49: jasper doesn't support the "validateXml" attribute
 #   around Ant part ...<ant antfile="jspc.xml" target="jspc"/>... @ 5:42 in
 #   oscar/target/antrun/build-main.xml
-#mvn -Dmaven.test.skip=true clean verify
-mvn -Dmaven.test.skip=true -Dcheckstyle.skip=true -Dpmd.skip=true clean package
+mvn -Dmaven.test.skip=true clean verify
 sudo cp ./target/*.war $CATALINA_BASE/webapps/oscar12.war
 #
 # build oscar_documents from source
