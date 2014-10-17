@@ -20,7 +20,7 @@ fi
 # (See https://issues.apache.org/bugzilla/show_bug.cgi?id=56560)
 if ! grep --quiet "tomcat-coyote.jar" $CATALINA_HOME/bin/catalina-tasks.xml
 then
-  sed -i '/<fileset file="${catalina.home}\/lib\/servlet-api.jar"\/>/a<fileset file="${catalina.home}\/lib\/tomcat-coyote.jar"\/>' $CATALINA_HOME/bin/catalina-tasks.xml
+  sudo sed -i '/<fileset file="${catalina.home}\/lib\/servlet-api.jar"\/>/a<fileset file="${catalina.home}\/lib\/tomcat-coyote.jar"\/>' $CATALINA_HOME/bin/catalina-tasks.xml
 fi
 #
 if [ ! -d $HOME/emr/oscar ]

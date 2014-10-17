@@ -106,7 +106,7 @@ export CATALINA_BASE="/var/lib/tomcat6"
 # (See https://issues.apache.org/bugzilla/show_bug.cgi?id=56560)
 if ! grep --quiet "tomcat-coyote.jar" $CATALINA_HOME/bin/catalina-tasks.xml
 then
-  sed -i '/<fileset file="${catalina.home}\/lib\/servlet-api.jar"\/>/a<fileset file="${catalina.home}\/lib\/tomcat-coyote.jar"\/>' $CATALINA_HOME/bin/catalina-tasks.xml
+  sudo sed -i '/<fileset file="${catalina.home}\/lib\/servlet-api.jar"\/>/a<fileset file="${catalina.home}\/lib\/tomcat-coyote.jar"\/>' $CATALINA_HOME/bin/catalina-tasks.xml
 fi
 #
 # This shouldn't be necessary but required in most recent deploys to avoid
