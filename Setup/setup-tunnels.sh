@@ -156,7 +156,7 @@ sudo /etc/init.d/monit restart
 #
 echo
 echo "Access endpoint from account on hub as follows:"
-echo "ssh -l scoopadmin localhost -p 303[0n] where 0n is the gatewayID"
-echo "Note that the password request is for the scoopadmin account"
+echo "ssh -l $USER localhost -p 303[0n] where 0n is the gatewayID"
+echo "Note that the password request is for the $USER account"
 echo "on the endpoint which can be different from the password of"
-echo "the scoopadmin acount on the hub."
+echo "the $USER acount on the hub."

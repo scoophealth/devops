@@ -2,6 +2,19 @@
 #
 set -e # exit on errors
 #
+if [ $# -gt 1 ]
+then
+  echo "Usage: $0 username"
+  echo " * Note: username is the account that owns the query-gateway process."
+  echo " * If omitted username defaults to 'scoopadmin'"
+  exit
+fi
+USERNAME='scoopadmin'
+if [ $# -eq 1 ]
+then
+  USERNAME="$1"
+fi
+export USERNAME
 ##
 ## Create bin/start-endpoint.sh
 ##
@@ -47,6 +60,7 @@ bundle exec rails server -p 3001 -d
 #tail -f rs.log
 EOF1
 #
+sed -i "s/scoopadmin/$USERNAME/g" $HOME/bin/start-endpoint.sh
 ##
 ## Create bin/stop-endpoint.sh
 ##
@@ -78,6 +92,8 @@ then
 fi
 EOF2
 #
+sed -i "s/scoopadmin/$USERNAME/g" $HOME/bin/start-endpoint.sh
+#
 chmod a+x $HOME/bin/*
 #
 ## Configure monit to enable command-line monit tools
@@ -104,4 +120,6 @@ check process query-gateway with pidfile /home/scoopadmin/endpoint/query-gateway
     if 100 restarts within 100 cycles then timeout
 EOF1
 #
+sudo sed -i "s/scoopadmin/$USERNAME/g" /etc/monit/conf.d/query-gateway
 sudo /etc/init.d/monit restart
+sudo monit status verbose

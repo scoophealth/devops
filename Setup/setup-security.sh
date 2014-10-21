@@ -64,7 +64,7 @@ if [ ! -d /encrypted ]
 then
   sudo monit unmonitor query-gateway
   sudo /etc/init.d/monit stop
-  /home/scoopadmin/bin/stop-endpoint.sh
+  $HOME/bin/stop-endpoint.sh
   sudo service mongodb stop
   # Move mongodb to encrypted filesystem
   echo "You need to set up passphrase now"
