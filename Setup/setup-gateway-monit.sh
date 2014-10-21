@@ -92,7 +92,7 @@ then
 fi
 EOF2
 #
-sed -i "s/scoopadmin/$USERNAME/g" $HOME/bin/start-endpoint.sh
+sed -i "s/scoopadmin/$USERNAME/g" $HOME/bin/stop-endpoint.sh
 #
 chmod a+x $HOME/bin/*
 #
