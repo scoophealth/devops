@@ -104,4 +104,4 @@ check process query-gateway with pidfile /home/scoopadmin/endpoint/query-gateway
     if 100 restarts within 100 cycles then timeout
 EOF1
 #
-sudo /etc/init.d/monit reload
+sudo /etc/init.d/monit restart
