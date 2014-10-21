@@ -47,7 +47,7 @@ fi
 # mongodb database is stored in an encrypted filesystem.  Comment out the start on
 # runlevel line but leave the stop on runlevel so the database is shut down
 # gracefully during system shutdown, reducing the likelihood of database corruption.
-sudo sed --in-place "s/start on runlevel/#start on runlevel/" /etc/init/mongodb.conf
+sudo sed --in-place "s/start on runlevel/#start on runlevel/" /etc/init/mongod.conf
 #
 ### 5) The query-gateway cannot start until the mongodb database filesystem
 # has the encryption password entered manually so unmonitor query-gateway
