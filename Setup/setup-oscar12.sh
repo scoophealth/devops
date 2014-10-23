@@ -104,6 +104,12 @@ export CATALINA_BASE="/var/lib/tomcat6"
 #
 # Patch to catalina-tasks.xml
 # (See https://issues.apache.org/bugzilla/show_bug.cgi?id=56560)
+# Without this patch, get errors like:
+# [ERROR] BUILD ERROR
+# [INFO] -----------------------------------------------------------------------
+# [INFO] An Ant BuildException has occured: The following error occurred while executing this line:
+# jspc.xml:49: java.lang.NoClassDefFoundError: org/apache/tomcat/util/descriptor/LocalResolver
+# around Ant part ...<ant antfile="jspc.xml" target="jspc"/>... @ 6:42 in target/antrun/build-main.xml
 if ! grep --quiet "tomcat-coyote.jar" $CATALINA_HOME/bin/catalina-tasks.xml
 then
   sudo sed -i '/<fileset file="${catalina.home}\/lib\/servlet-api.jar"\/>/a<fileset file="${catalina.home}\/lib\/tomcat-coyote.jar"\/>' $CATALINA_HOME/bin/catalina-tasks.xml
@@ -114,12 +120,6 @@ fi
 mkdir -p ~/.m2/repository
 rsync -av $HOME/emr/oscar/local_repo/ $HOME/.m2/repository/
 #
-# Missing validateXml option in Jasper with Tomcat 6.0.39-1 for Ubuntu 14.04LTS
-# Restored in Tomcat 6.0.40 according to http://tomcat.apache.org/tomcat-6.0-doc/changelog.html
-# With 6.0.39-1 get following error:
-#   oscar/jspc.xml:49: jasper doesn't support the "validateXml" attribute
-#   around Ant part ...<ant antfile="jspc.xml" target="jspc"/>... @ 5:42 in
-#   oscar/target/antrun/build-main.xml
 mvn -Dmaven.test.skip=true clean verify
 sudo cp ./target/*.war $CATALINA_BASE/webapps/oscar12.war
 #
