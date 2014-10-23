@@ -65,7 +65,7 @@ then
   sudo monit unmonitor query-gateway
   sudo /etc/init.d/monit stop
   $HOME/bin/stop-endpoint.sh
-  sudo service mongodb stop
+  sudo service mongod stop
   # Move mongodb to encrypted filesystem
   echo "You need to set up passphrase now"
   sudo encfs --public /.encrypted /encrypted
@@ -77,12 +77,12 @@ then
     echo "Error occurred moving mongodb to encrypted filesystem"
     exit
   fi
-  sudo sed --in-place "s/\/var\/lib\/mongodb/\/encrypted\/mongodb/" /etc/mongodb.conf
+  sudo sed --in-place "s/\/var\/lib\/mongodb/\/encrypted\/mongodb/" /etc/mongod.conf
   sudo /etc/init.d/monit start
   cd ~/endpoint/query-gateway
   sudo mv log /encrypted/endpoint-log
   sudo ln -s /encrypted/endpoint-log ./log
-  echo "sudo /usr/bin/encfs --public /.encrypted /encrypted && sudo initctl start mongodb && sudo monit start query-gateway" > $HOME/start-encfs-mongo-endpoint
+  echo "sudo /usr/bin/encfs --public /.encrypted /encrypted && sudo initctl start mongod && sudo monit start query-gateway" > $HOME/start-encfs-mongo-endpoint
   cd $HOME
   chmod a+x ./start-encfs-mongo-endpoint
 fi
