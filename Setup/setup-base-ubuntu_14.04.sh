@@ -102,8 +102,13 @@ cd $HOME
 # set up ruby and rails
 if [ ! -d ".rvm" ]
 then
+  # a key now seems required (as of Oct 29, 2014)
+  gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
   curl -L https://get.rvm.io | bash -s stable
-  #echo 'source ~/.profile' >> ~/.bash_profile
+  if [ ! ~/.bash_profile ]
+  then
+    echo 'source ~/.profile' >> ~/.bash_profile
+  fi
   #source ~/.bash_profile
   source $HOME/.rvm/scripts/rvm
   rvm requirements

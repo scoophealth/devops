@@ -7,7 +7,7 @@ and deployment.
 Scripts used in this order:
   1. setup-base.sh
   2. setup-scoophealth.sh
-  3. setup-tunnels.sh (for endpoint servers)
+  3. setup-tunnels.sh (for endpoint servers, a hub must exist before this script can be ran)
   4. setup-oscar12.sh (for endpoint servers at Oscar sites)
   5. setup-gateway-monit.sh (for endpoint servers, pass script username of account running query-gateway, defaults to scoopadmin)
   6. setup-hub-monit.sh (for hub server)
