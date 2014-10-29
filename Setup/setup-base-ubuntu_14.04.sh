@@ -105,7 +105,7 @@ then
   # a key now seems required (as of Oct 29, 2014)
   gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
   curl -L https://get.rvm.io | bash -s stable
-  if [ ! ~/.bash_profile ]
+  if [ ! -f $HOME/.bash_profile ]
   then
     echo 'source ~/.profile' >> ~/.bash_profile
   fi
