@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 set -e # exit on errors
+SCRIPTNAME=$0
 #
 cd $HOME
 #
@@ -40,3 +41,5 @@ cd query-composer
 bundle install
 bundle exec rake db:seed
 bundle exec rake test
+#
+echo "Completed $SCRIPTNAME successfully"

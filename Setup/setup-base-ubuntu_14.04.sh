@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 set -e # exit on errors
+SCRIPTNAME=$0
 #
 # bring OS up to date
 sudo apt-get --yes update
@@ -123,3 +124,4 @@ echo
 echo "Use 'sudo vi /etc/resolvconf/resolv.conf.d/head' to add specific nameservers to"
 echo "/etc/resolv.conf for DNS lookups.  For instance, add the line"
 echo "'nameserver 142.104.6.1' to use UVic's main name service."
+echo "Completed $SCRIPTNAME successfully"
