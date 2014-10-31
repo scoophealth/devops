@@ -121,6 +121,8 @@ mkdir -p ~/.m2/repository
 rsync -av $HOME/emr/oscar/local_repo/ $HOME/.m2/repository/
 #
 mvn -Dmaven.test.skip=true clean verify
+# stop tomcat before deploying new war since database isn't configured yet
+sudo /etc/init.d/tomcat6 stop
 sudo cp ./target/*.war $CATALINA_BASE/webapps/oscar12.war
 #
 # build oscar_documents from source
