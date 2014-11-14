@@ -29,7 +29,7 @@ fi
 #
 cat > $HOME/bin/start-hub.sh << 'EOF1'
 #!/bin/bash
-export HOME=/home/scoopadmin
+export HOME=/home/pdcadmin
 source $HOME/.bash_profile
 source $HOME/.bashrc
 #
@@ -64,7 +64,7 @@ EOF1
 ##
 cat > $HOME/bin/stop-hub.sh << 'EOF2'
 #!/bin/bash
-export HOME=/home/scoopadmin
+export HOME=/home/pdcadmin
 source $HOME/.bash_profile
 source $HOME/.bashrc
 cd $HOME/hub/query-composer
@@ -110,9 +110,9 @@ EOF0
 #Setup monit to start query-composer
 sudo bash -c "cat > /etc/monit/conf.d/query-composer" <<'EOF1'
 # Monitor gateway
-check process query-composer with pidfile /home/scoopadmin/hub/query-composer/tmp/pids/server.pid
-    start program = "/home/scoopadmin/bin/start-hub.sh" as uid scoopadmin and with gid scoopadmin
-    stop program = "/home/scoopadmin/bin/stop-hub.sh" as uid scoopadmin and with gid scoopadmin
+check process query-composer with pidfile /home/pdcadmin/hub/query-composer/tmp/pids/server.pid
+    start program = "/home/pdcadmin/bin/start-hub.sh" as uid pdcadmin and with gid pdcadmin
+    stop program = "/home/pdcadmin/bin/stop-hub.sh" as uid pdcadmin and with gid pdcadmin
     if 100 restarts within 100 cycles then timeout
 EOF1
 #

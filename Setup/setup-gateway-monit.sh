@@ -6,10 +6,10 @@ if [ $# -gt 1 ]
 then
   echo "Usage: $0 username"
   echo " * Note: username is the account that owns the query-gateway process."
-  echo " * If omitted username defaults to 'scoopadmin'"
+  echo " * If omitted username defaults to 'pdcadmin'"
   exit
 fi
-USERNAME='scoopadmin'
+USERNAME='pdcadmin'
 if [ $# -eq 1 ]
 then
   USERNAME="$1"
@@ -25,7 +25,7 @@ fi
 #
 cat > $HOME/bin/start-endpoint.sh << 'EOF1'
 #!/bin/bash
-export HOME=/home/scoopadmin
+export HOME=/home/pdcadmin
 source $HOME/.bash_profile
 source $HOME/.bashrc
 #
@@ -60,13 +60,13 @@ bundle exec rails server -p 3001 -d
 #tail -f rs.log
 EOF1
 #
-sed -i "s/scoopadmin/$USERNAME/g" $HOME/bin/start-endpoint.sh
+sed -i "s/pdcadmin/$USERNAME/g" $HOME/bin/start-endpoint.sh
 ##
 ## Create bin/stop-endpoint.sh
 ##
 cat > $HOME/bin/stop-endpoint.sh << 'EOF2'
 #!/bin/bash
-export HOME=/home/scoopadmin
+export HOME=/home/pdcadmin
 source $HOME/.bash_profile
 source $HOME/.bashrc
 cd $HOME/endpoint/query-gateway
@@ -92,7 +92,7 @@ then
 fi
 EOF2
 #
-sed -i "s/scoopadmin/$USERNAME/g" $HOME/bin/stop-endpoint.sh
+sed -i "s/pdcadmin/$USERNAME/g" $HOME/bin/stop-endpoint.sh
 #
 chmod a+x $HOME/bin/*
 #
@@ -114,12 +114,12 @@ EOF0
 #Setup monit to start query-gateway
 sudo bash -c "cat > /etc/monit/conf.d/query-gateway" <<'EOF1'
 # Monitor gateway
-check process query-gateway with pidfile /home/scoopadmin/endpoint/query-gateway/tmp/pids/server.pid
-    start program = "/home/scoopadmin/bin/start-endpoint.sh" as uid scoopadmin and with gid scoopadmin
-    stop program = "/home/scoopadmin/bin/stop-endpoint.sh" as uid scoopadmin and with gid scoopadmin
+check process query-gateway with pidfile /home/pdcadmin/endpoint/query-gateway/tmp/pids/server.pid
+    start program = "/home/pdcadmin/bin/start-endpoint.sh" as uid pdcadmin and with gid pdcadmin
+    stop program = "/home/pdcadmin/bin/stop-endpoint.sh" as uid pdcadmin and with gid pdcadmin
     if 100 restarts within 100 cycles then timeout
 EOF1
 #
-sudo sed -i "s/scoopadmin/$USERNAME/g" /etc/monit/conf.d/query-gateway
+sudo sed -i "s/pdcadmin/$USERNAME/g" /etc/monit/conf.d/query-gateway
 sudo /etc/init.d/monit restart
 sudo monit status verbose

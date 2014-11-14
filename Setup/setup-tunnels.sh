@@ -18,7 +18,7 @@ fi
 echo "The public rsa key must be copied to the hub before we can continue."
 echo "Checking that now..."
 hostname=`hostname`
-sudo scp /root/.ssh/id_rsa.pub autossh@scoophub.cs.uvic.ca:/tmp/"$hostname"_id_rsa.pub
+sudo scp /root/.ssh/id_rsa.pub autossh@pdchub.uvic.ca:/tmp/"$hostname"_id_rsa.pub
 if [ ! $? -eq 0 ]
 then
   echo "Please read Server-Configuration.md in this repo."
@@ -63,7 +63,7 @@ sudo bash -c "cat  > /usr/local/reverse_ssh/bin/start_admin_tunnel.sh" <<'EOF1'
 REMOTE_ACCESS_PORT=30308
 LOCAL_PORT_TO_FORWARD=22
 export AUTOSSH_PIDFILE=/usr/local/reverse_ssh/autossh_admin.pid
-/usr/bin/autossh -M0 -p22 -N -R ${REMOTE_ACCESS_PORT}:localhost:${LOCAL_PORT_TO_FORWARD} autossh@scoophub.cs.uvic.ca -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -o Protocol=2 -o ExitOnForwardFailure=yes &
+/usr/bin/autossh -M0 -p22 -N -R ${REMOTE_ACCESS_PORT}:localhost:${LOCAL_PORT_TO_FORWARD} autossh@pdchub.uvic.ca -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -o Protocol=2 -o ExitOnForwardFailure=yes &
 #
 EOF1
 #
@@ -74,7 +74,7 @@ sudo bash -c "cat  > /usr/local/reverse_ssh/bin/start_endpoint_tunnel.sh" <<'EOF
 REMOTE_ACCESS_PORT=13001
 LOCAL_PORT_TO_FORWARD=3001
 export AUTOSSH_PIDFILE=/usr/local/reverse_ssh/autossh_endpoint.pid
-/usr/bin/autossh -M0 -p22 -N -R ${REMOTE_ACCESS_PORT}:localhost:${LOCAL_PORT_TO_FORWARD} autossh@scoophub.cs.uvic.ca -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -o Protocol=2 -o ExitOnForwardFailure=yes &
+/usr/bin/autossh -M0 -p22 -N -R ${REMOTE_ACCESS_PORT}:localhost:${LOCAL_PORT_TO_FORWARD} autossh@pdchub.uvic.ca -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -o Protocol=2 -o ExitOnForwardFailure=yes &
 #
 EOF2
 #
