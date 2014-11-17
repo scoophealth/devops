@@ -86,6 +86,7 @@ then
   cd $HOME
   chmod a+x ./start-encfs-mongo-endpoint
 fi
+sudo ~/start-encfs-mongo-endpoint
 #
 ### 6) Move the oscar properties file to the encrypted filesystem
 if [ -f $CATALINA_HOME/oscar12.properties ]

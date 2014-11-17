@@ -138,6 +138,7 @@ then
 # Run five minutes after hour, every day
 # Provides automatic recovery if monit unmonitors autossh_admin
 5 * * * *  /usr/bin/monit start autossh_admin >> /var/log/monit-cron.log 2>&1
+6 * * * *  /usr/bin/monit start autossh_endpoint >> /var/log/monit-cron.log 2>&1
 EOF8
     sudo crontab -u root /root/crontab.root
   fi
@@ -148,6 +149,7 @@ else
 # Run five minutes after hour, every day
 # Provides automatic recovery if monit unmonitors autossh_admin
 5 * * * *  /usr/bin/monit start autossh_admin >> /var/log/monit-cron.log 2>&1
+6 * * * *  /usr/bin/monit start autossh_endpoint >> /var/log/monit-cron.log 2>&1
 EOF9
     sudo crontab -u root /root/crontab.root
 fi
