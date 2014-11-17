@@ -153,6 +153,8 @@ EOF9
 fi
 #
 sudo /etc/init.d/monit restart
+sudo /usr/bin/monit start autossh_admin
+sudo /usr/bin/monit start autossh_endpoint
 #
 echo
 echo "Access endpoint from account on hub as follows:"
