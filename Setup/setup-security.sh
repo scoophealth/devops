@@ -97,6 +97,8 @@ then
     sudo mkdir /encrypted/oscar
     sudo mv oscar12.properties /encrypted/oscar
     sudo ln -s /encrypted/oscar/oscar12.properties ./oscar12.properties
+    sudo chown root:tomcat6 /encrypted/oscar/oscar12.properties
+    sudo chmod o-rwx /encrypted/oscar/oscar12.properties
   fi
 fi
 echo
