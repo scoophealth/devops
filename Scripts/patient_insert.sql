@@ -3,6 +3,8 @@
 -- 0 Need the program and program_provider database tables populated
 --   with entries for the 'OSCAR' program.  These entries are written
 --   the first time that OscarEMR starts up with a new database.
+--   0. If it exists, drop 'oscar15_bc' database in mysql:
+--      mysql> drop database oscar15_bc;
 --   1. In oscar/database/mysql run something like this:
 --      $ ./createdatabase_bc.sh root <password> oscar15_bc
 --   2. Deploy Oscar war and start tomcat7:
