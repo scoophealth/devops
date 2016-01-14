@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e #exit on errors
 DBNAME="oscar15_bc"
 INITFILE="$HOME/git/devops/Scripts/patient_insert.sql"
 PASSWD="xxxxxxxxxx"
