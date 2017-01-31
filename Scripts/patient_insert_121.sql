@@ -3,8 +3,13 @@
 -- 0 Need the program and program_provider database tables populated
 --   with entries for the 'OSCAR' program.  These entries are written
 --   the first time that OscarEMR starts up with a new database.
+--   0. If it exists, drop 'oscar121_bc' database in mysql:
+--      mysql> drop database oscar121_bc;
+--      Note that this script can be ran multiple times in which case
+--      there is no need to drop the database before rerunning
+--      provided that createdatabase_bc.sh isn't reran.
 --   1. In oscar/database/mysql run something like this:
---      $ ./createdatabase_bc.sh root <password> oscar15_bc
+--      $ ./createdatabase_bc.sh root <password> oscar121_bc
 --   2. Deploy Oscar war and start tomcat7:
 --      (Inserts 'OSCAR' program into the program and program_provider database tables)
 --      $ sudo service tomcat7 start
@@ -12,7 +17,7 @@
 --      mysql> select * from program where name='OSCAR';
 --      mysql> select * from program_provider;
 --   3. Now run this script.
-     
+
 -- 1
 INSERT INTO `demographic`
 (
@@ -170,14 +175,24 @@ VALUES
 ('WT',(select max(demographic_no) from demographic),
 '999998','95','in kg','','2013-09-25 00:00:00','2013-09-25 15:51:13',0);
 -- Labs
+INSERT INTO `fileUploadCheck` (`provider_no`, `filename`, `md5sum`, `date_time`)
+VALUES
+('999998','LabUpload.1 QA 201306 HL7_2.3.xml.1380236074288','300e62acad42535e9cdd0a8937a71b18','2013-09-26 15:54:34');
+INSERT INTO `hl7TextMessage` (`fileUploadCheck_id`, `message`, `type`, `serviceName`, `created`)
+VALUES 
+((select max(id) from fileUploadCheck),
+'TVNIfF5+XCZ8UEFUSEw3fExJRkVMQUJTfEhUVFBDTElFTlR8dmVuZG9yMXwyMDEzMDYyNzEyMTMyOXx8T1JVXlIwMXxBQ0MyMDEzMDYyNzEyMTMyOTA4OXxQfDIuM3x8fEVSfEFMClBJRHx8OTA1NTU1NTU1NXx8fEVYQ0VMTEVSSVNeQVBBVElFTlR8fDE5NzcwNzI2fE18fHx8fCg2MDQpOTk5LTk5OTkKT1JDfFJFfHwxMy05OTk5NTU1MjgtSFAtMXx8fHx8fHx8fDkwOTA5Xk1EQ0FSRV5CT0IKT0JSfDF8fDEzLTk5OTk1NTUyOC1IUC0xfEhQXkhlbWF0b2xvZ3kgUGFuZWx8fDIwMTMwNTI3MTM0MDAwfDIwMTMwNTI3MTM0MDAwfHx8fHx8fDIwMTMwNTI3MTM0MDAwfHw5MDkwOV5NRENBUkVeQk9CfHx8fHx8MjAxMzA1MzExMDIwMTJ8fEhBRU0xfEZ8fHw5MDkwOV5NRENBUkVeQk9CCk9CWHwxfE5NfDY2OTAtMl5XQkN8fDguMHxnaWdhL0x8NC4wLTEwLjB8Tnx8fEZ8fHwyMDEzMDUzMTEwMjAxMgpPQlh8MnxOTXw3ODktOF5SQkN8fDQuNzF8dGVyYS9MfDQuMjAtNS40MHxOfHx8Rnx8fDIwMTMwNTMxMTAyMDEyCk9CWHwzfE5NfDcxOC03XkhlbW9nbG9iaW58fDE1OHxnL0x8MTMzLTE2NXxOfHx8Rnx8fDIwMTMwNTMxMTAyMDEyCk9CWHw0fE5NfDQ1NDQtM15IZW1hdG9jcml0fHwwLjQ2fHwwLjM4LTAuNTB8Tnx8fEZ8fHwyMDEzMDUzMTEwMjAxMgpPQlh8NXxOTXw3ODctMl5NQ1Z8fDk5fGZsfDgyLTk4fEF8fHxGfHx8MjAxMzA1MzExMDIwMTIKT0JYfDZ8Tk18Nzg1LTZeTUNIfHwzMy41fHBnfDI3LjUtMzMuNXxOfHx8Rnx8fDIwMTMwNTMxMTAyMDEyCk9CWHw3fE5NfDc4Ni00Xk1DSEN8fDM0MXxnL0x8MzA1LTM2NXxOfHx8Rnx8fDIwMTMwNTMxMTAyMDEyCk9CWHw4fE5NfDc4OC0wXlJEV3x8MTIuNnwlfDExLjUtMTQuNXxOfHx8Rnx8fDIwMTMwNTMxMTAyMDEyCk9CWHw5fE5NfDc3Ny0zXlBsYXRlbGV0IENvdW50fHwyOTV8Z2lnYS9MfDE1MC00MDB8Tnx8fEZ8fHwyMDEzMDUzMTEwMjAxMgpPQlh8MTB8Tk18NzUxLTheTmV1dHJvcGhpbHN8fDYuMHxnaWdhL0x8Mi4wLTcuNXxOfHx8Rnx8fDIwMTMwNTMxMTAyMDEyCk9CWHwxMXxOTXw3MzEtMF5MeW1waG9jeXRlc3x8MS42fGdpZ2EvTHwxLjAtNC4wfE58fHxGfHx8MjAxMzA1MzExMDIwMTIKT0JYfDEyfE5NfDc0Mi03Xk1vbm9jeXRlc3x8MC40fGdpZ2EvTHwwLjEtMC44fE58fHxGfHx8MjAxMzA1MzExMDIwMTIKT0JYfDEzfE5NfDcxMS0yXkVvc2lub3BoaWxzfHwwLjF8Z2lnYS9MfDAuMC0wLjd8Tnx8fEZ8fHwyMDEzMDUzMTEwMjAxMgpPQlh8MTR8Tk18NzA0LTdeQmFzb3BoaWxzfHwwLjB8Z2lnYS9MfDAuMC0wLjJ8Tnx8fEZ8fHwyMDEzMDUzMTEwMjAxMgpPUkN8UkV8fDEzLTk5OTk1NTUyOC1QVC0xfHx8fHx8fHx8OTA5MDleTURDQVJFXkJPQgpPQlJ8Mnx8MTMtOTk5OTU1NTI4LVBULTF8UFReSU5SfHwyMDEzMDUyNzEzNDAwMHwyMDEzMDUyNzEzNDAwMHx8fHx8fHwyMDEzMDUyNzEzNDAwMHx8OTA5MDleTURDQVJFXkJPQnx8fHx8fDIwMTMwNTMxMTAyMDEyfHxIQUVNM3xGfHx8OTA5MDleTURDQVJFXkJPQgpPQlh8MXxOTXw2MzAxLTZeSU5SfHwxLjB8fDAuOC0xLjJ8Tnx8fEZ8fHwyMDEzMDUzMTEwMjAxMgpOVEV8fHxUaGVyYXBldXRpYyBSYW5nZSBmb3Igd2FyZmFyaW4gdHJlYXRtZW50XC5iclxUYXJnZXQgMi41ICAgICAgIElOUiBSYW5nZSAyLjAgLSAzLjBcLmJyXE1vc3QgaW5kaWNhdGlvbnMgZm9yIHdhcmZhcmluXC5iclxhbnRpY29hZ3VsYW50IHRoZXJhcHlcLmJyXC0gc3Ryb2tlL3N5c3RlbWljIGVtYm9saXNtIHByb3BoeWxheGlzXC5iclxpbiBhdHJpYWwgZmlicmlsbGF0aW9uXC5iclwtIHRyZWF0bWVudCBhbmQgcHJldmVudGlvbiBvZiB2ZW5vdXNcLmJyXHRocm9tYm9lbWJvbGlzbVwuYnJcLSBtZWNoYW5pY2FsIGhlYXJ0IHZhbHZlIGluIHRoZSBhb3J0aWNcLmJyXHBvc2l0aW9uXC5iclxUYXJnZXQgMy4wICAgICAgIElOUiBSYW5nZSAyLjUgLSAzLjVcLmJyXE1lY2hhbmljYWwgaGVhcnQgdmFsdmUgaW4gdGhlIG1pdHJhbFwuYnJccG9zaXRpb24uXC5iclxcLmJyXENvbmZpcm0gdGFyZ2V0IElOUiB3aXRoIHNwZWNpYWxpc3RcLmJyXHBoeXNpY2lhbi5cLmJyXApPUkN8UkV8fDEzLTk5OTk1NTUyOC1SQlMtMXx8fHx8fHx8fDkwOTA5Xk1EQ0FSRV5CT0IKT0JSfDN8fDEzLTk5OTk1NTUyOC1SQlMtMXxSQlNeR2x1Y29zZSBSYW5kb218fDIwMTMwNTI3MTM0MDAwfDIwMTMwNTI3MTM0MDAwfHx8fHx8fDIwMTMwNTI3MTM0MDAwfHw5MDkwOV5NRENBUkVeQk9CfHx8fHx8MjAxMzA1MzExMDIwMTJ8fENIRU00fEZ8fHw5MDkwOV5NRENBUkVeQk9CCk9CWHwxfE5NfDE0NzQ5LTZeR2x1Y29zZSBSYW5kb218fDUuMnxtbW9sL0x8My4zLTExLjB8Tnx8fEZ8fHwyMDEzMDUzMTEwMjAxMgpPUkN8UkV8fDEzLTk5OTk1NTUyOC1DUkUtMXx8fHx8fHx8fDkwOTA5Xk1EQ0FSRV5CT0IKT0JSfDR8fDEzLTk5OTk1NTUyOC1DUkUtMXxDUkVeQ3JlYXRpbmluZS9lR0ZSfHwyMDEzMDUyNzEzNDAwMHwyMDEzMDUyNzEzNDAwMHx8fHx8fHwyMDEzMDUyNzEzNDAwMHx8OTA5MDleTURDQVJFXkJPQnx8fHx8fDIwMTMwNTMxMTAyMDEyfHxDSEVNNHxGfHx8OTA5MDleTURDQVJFXkJPQgpPQlh8MXxOTXwxNDY4Mi05XkNyZWF0aW5pbmV8fDY4fHVtb2wvTHw3MC0xMjB8QXx8fEZ8fHwyMDEzMDUzMTEwMjAxMgpPQlh8MnxOTXwzMzkxNC0zXkVzdGltYXRlZCBHRlJ8fDExM3xtTC9taW58Pj02MHxOfHx8Rnx8fDIwMTMwNTMxMTAyMDEyCk5URXx8fEZvciBmdXJ0aGVyIGluZm9ybWF0aW9uIHNlZVwuYnJcaHR0cDovL3d3dy5iY2d1aWRlbGluZXMuY2EvZ3BhYy9cLmJyXHBkZi9ja2QucGRmXC5iclwKT1JDfFJFfHwxMy05OTk5NTU1MjgtVUEtMXx8fHx8fHx8fDkwOTA5Xk1EQ0FSRV5CT0IKT0JSfDV8fDEzLTk5OTk1NTUyOC1VQS0xfFVBXlVyaWMgQWNpZHx8MjAxMzA1MjcxMzQwMDB8MjAxMzA1MjcxMzQwMDB8fHx8fHx8MjAxMzA1MjcxMzQwMDB8fDkwOTA5Xk1EQ0FSRV5CT0J8fHx8fHwyMDEzMDUzMTEwMjAxMnx8Q0hFTTR8Rnx8fDkwOTA5Xk1EQ0FSRV5CT0IKT0JYfDF8Tk18MTQ5MzMtNl5VcmljIEFjaWR8fDMxN3x1bW9sL0x8MjM0LTUyOXxOfHx8Rnx8fDIwMTMwNTMxMTAyMDEyCk9SQ3xSRXx8MTMtOTk5OTU1NTI4LUFMQi0xfHx8fHx8fHx8OTA5MDleTURDQVJFXkJPQgpPQlJ8Nnx8MTMtOTk5OTU1NTI4LUFMQi0xfEFMQl5BbGJ1bWlufHwyMDEzMDUyNzEzNDAwMHwyMDEzMDUyNzEzNDAwMHx8fHx8fHwyMDEzMDUyNzEzNDAwMHx8OTA5MDleTURDQVJFXkJPQnx8fHx8fDIwMTMwNTMxMTAyMDEyfHxDSEVNNHxGfHx8OTA5MDleTURDQVJFXkJPQgpPQlh8MXxOTXwxNzUxLTdeQWxidW1pbnx8NDV8Zy9MfDM1LTUwfE58fHxGfHx8MjAxMzA1MzExMDIwMTIKT1JDfFJFfHwxMy05OTk5NTU1MjgtQklMLTF8fHx8fHx8fHw5MDkwOV5NRENBUkVeQk9CCk9CUnw3fHwxMy05OTk5NTU1MjgtQklMLTF8QklMXkJpbGlydWJpbnx8MjAxMzA1MjcxMzQwMDB8MjAxMzA1MjcxMzQwMDB8fHx8fHx8MjAxMzA1MjcxMzQwMDB8fDkwOTA5Xk1EQ0FSRV5CT0J8fHx8fHwyMDEzMDUzMTEwMjAxMnx8Q0hFTTR8Rnx8fDkwOTA5Xk1EQ0FSRV5CT0IKT0JYfDF8Tk18MTQ2MzEtNl5Ub3RhbCBCaWxpcnViaW58fDE2fHVtb2wvTHw8MjB8Tnx8fEZ8fHwyMDEzMDUzMTEwMjAxMgpPQlh8MnxOTXwxNDYyOS0wXkRpcmVjdCBCaWxpcnViaW58fDV8dW1vbC9MfDw4fE58fHxGfHx8MjAxMzA1MzExMDIwMTIKT1JDfFJFfHwxMy05OTk5NTU1MjgtQUxLLTF8fHx8fHx8fHw5MDkwOV5NRENBUkVeQk9CCk9CUnw4fHwxMy05OTk5NTU1MjgtQUxLLTF8QUxLXkFsa2FsaW5lIFBob3NwaGF0YXNlfHwyMDEzMDUyNzEzNDAwMHwyMDEzMDUyNzEzNDAwMHx8fHx8fHwyMDEzMDUyNzEzNDAwMHx8OTA5MDleTURDQVJFXkJPQnx8fHx8fDIwMTMwNTMxMTAyMDEyfHxDSEVNNHxGfHx8OTA5MDleTURDQVJFXkJPQgpPQlh8MXxOTXw2NzY4LTZeQWxrYWxpbmUgUGhvc3BoYXRhc2V8fDc0fFUvTHw0OC0xMzh8Tnx8fEZ8fHwyMDEzMDUzMTEwMjAxMgpPUkN8UkV8fDEzLTk5OTk1NTUyOC1ZR1QtMXx8fHx8fHx8fDkwOTA5Xk1EQ0FSRV5CT0IKT0JSfDl8fDEzLTk5OTk1NTUyOC1ZR1QtMXxZR1ReR2FtbWEgR1R8fDIwMTMwNTI3MTM0MDAwfDIwMTMwNTI3MTM0MDAwfHx8fHx8fDIwMTMwNTI3MTM0MDAwfHw5MDkwOV5NRENBUkVeQk9CfHx8fHx8MjAxMzA1MzExMDIwMTJ8fENIRU00fEZ8fHw5MDkwOV5NRENBUkVeQk9CCk9CWHwxfE5NfDIzMjQtMl5HYW1tYSBHVHx8MTB8VS9MfDEwLTU4fE58fHxGfHx8MjAxMzA1MzExMDIwMTIKT1JDfFJFfHwxMy05OTk5NTU1MjgtQUxULTF8fHx8fHx8fHw5MDkwOV5NRENBUkVeQk9CCk9CUnwxMHx8MTMtOTk5OTU1NTI4LUFMVC0xfEFMVF5BTFR8fDIwMTMwNTI3MTM0MDAwfDIwMTMwNTI3MTM0MDAwfHx8fHx8fDIwMTMwNTI3MTM0MDAwfHw5MDkwOV5NRENBUkVeQk9CfHx8fHx8MjAxMzA1MzExMDIwMTJ8fENIRU00fEZ8fHw5MDkwOV5NRENBUkVeQk9CCk9CWHwxfE5NfDE3NDItNl5BTFR8fDE5fFUvTHw8NjB8Tnx8fEZ8fHwyMDEzMDUzMTEwMjAxMgpPUkN8UkV8fDEzLTk5OTk1NTUyOC1BU1QtMXx8fHx8fHx8fDkwOTA5Xk1EQ0FSRV5CT0IKT0JSfDExfHwxMy05OTk5NTU1MjgtQVNULTF8QVNUXkFTVHx8MjAxMzA1MjcxMzQwMDB8MjAxMzA1MjcxMzQwMDB8fHx8fHx8MjAxMzA1MjcxMzQwMDB8fDkwOTA5Xk1EQ0FSRV5CT0J8fHx8fHwyMDEzMDUzMTEwMjAxMnx8Q0hFTTR8Rnx8fDkwOTA5Xk1EQ0FSRV5CT0IKT0JYfDF8Tk18MTkyMC04XkFTVHx8MjV8VS9MfDwzNXxOfHx8Rnx8fDIwMTMwNTMxMTAyMDEyCk9SQ3xSRXx8MTMtOTk5OTU1NTI4LUxBQy0xfHx8fHx8fHx8OTA5MDleTURDQVJFXkJPQgpPQlJ8MTJ8fDEzLTk5OTk1NTUyOC1MQUMtMXxMQUNeTGFjdGljIEFjaWR8fDIwMTMwNTI3MTM0MDAwfDIwMTMwNTI3MTM0MDAwfHx8fHx8fDIwMTMwNTI3MTM0MDAwfHw5MDkwOV5NRENBUkVeQk9CfHx8fHx8MjAxMzA1MzExMDIwMTJ8fENIRU0yOXxGfHx8OTA5MDleTURDQVJFXkJPQgpPQlh8MXxOTXwyNTI0LTdeTGFjdGljIEFjaWR8fDEuMHxtbW9sL0x8MC43LTIuMXxOfHx8Rnx8fDIwMTMwNTMxMTAyMDEyCk9SQ3xSRXx8MTMtOTk5OTU1NTI4LVNFUklORC0xfHx8fHx8fHx8OTA5MDleTURDQVJFXkJPQgpPQlJ8MTN8fDEzLTk5OTk1NTUyOC1TRVJJTkQtMXxTRVJJTkReU2VydW0gSW5kaWNlc3x8MjAxMzA1MjcxMzQwMDB8MjAxMzA1MjcxMzQwMDB8fHx8fHx8MjAxMzA1MjcxMzQwMDB8fDkwOTA5Xk1EQ0FSRV5CT0J8fHx8fHwyMDEzMDUzMTEwMjAxMnx8Q0hFTTI5fEZ8fHw5MDkwOV5NRENBUkVeQk9CCk9CWHwxfFNUfDQ2NDI1LTVeTGlwZW1pYXx8U2xpZ2h0fHx8QXx8fEZ8fHwyMDEzMDUzMTEwMjAxMgpPUkN8UkV8fDEzLTk5OTk1NTUyOC1IQy0xfHx8fHx8fHx8OTA5MDleTURDQVJFXkJPQgpPQlJ8MTR8fDEzLTk5OTk1NTUyOC1IQy0xfEhDXkhlcGF0aXRpcyBDfHwyMDEzMDUyNzEzNDAwMHwyMDEzMDUyNzEzNDAwMHx8fHx8fHwyMDEzMDUyNzEzNDAwMHx8OTA5MDleTURDQVJFXkJPQnx8fHx8fDIwMTMwNTMxMTAyMDEyfHxSRUZFUjF8Rnx8fDkwOTA5Xk1EQ0FSRV5CT0IKTlRFfHx8SGVwYXRpdGlzIEMgUk5BIHF1YW50aXRhdGl2ZVwuYnJcU2VudCB0byBCQyBDZW50cmUgZm9yIERpc2Vhc2UgQ29udHJvbFwuYnJcKFByb3YgTGFiKS4gUGh5c2ljaWFucyBtYXkgY2FsbFwuYnJcMS04NzctNzQ3LTI1MjIgKDEtODc3LVBIU0FMQUIpIGZvciByZXN1bHRzLgpPUkN8UkV8fDEzLTk5OTk1NTUyOC1ISVZMLTF8fHx8fHx8fHw5MDkwOV5NRENBUkVeQk9CCk9CUnwxNXx8MTMtOTk5OTU1NTI4LUhJVkwtMXxISVZMXkhJViBWaXJhbCBMb2FkfHwyMDEzMDUyNzEzNDAwMHwyMDEzMDUyNzEzNDAwMHx8fHx8fHwyMDEzMDUyNzEzNDAwMHx8OTA5MDleTURDQVJFXkJPQnx8fHx8fDIwMTMwNTMxMTAyMDEyfHxSRUZFUjF8Rnx8fDkwOTA5Xk1EQ0FSRV5CT0IKTlRFfHx8SGl2IHZpcmFsIGxvYWRcLmJyXFNlbnQgdG8gU3QuIFBhdWwncyBIb3NwaXRhbCBWaXJvbG9neSBMYWIuXC5iclxQaHlzaWNpYW5zIG1heSBjYWxsIDYwNC04MDYtODgxMCBmb3IgcmVzdWx0cy4KT1JDfFJFfHwxMy05OTk5NTU1MjgtQ0Q0LTF8fHx8fHx8fHw5MDkwOV5NRENBUkVeQk9CCk9CUnwxNnx8MTMtOTk5OTU1NTI4LUNENC0xfENENF5DRDR8fDIwMTMwNTI3MTM0MDAwfDIwMTMwNTI3MTM0MDAwfHx8fHx8fDIwMTMwNTI3MTM0MDAwfHw5MDkwOV5NRENBUkVeQk9CfHx8fHx8MjAxMzA1MzExMDIwMTJ8fFJFRkVSMXxGfHx8OTA5MDleTURDQVJFXkJPQgpOVEV8fHxDRDQgSW1tdW5vcGhlbm90eXBpbmdcLmJyXFNlbnQgdG8gUm95YWwgSnViaWxlZSBIb3NwaXRhbC5cLmJyXFBoeXNpY2lhbnMgbWF5IGNhbGwgMjUwLTM3MC04MDAwIGZvciByZXN1bHRzLgo=','PATHL7','InsideLabUploadAction','2013-09-26 15:54:34');
 INSERT INTO `hl7TextInfo` (`lab_no`, `sex`, `health_no`, `result_status`, `final_result_count`, `obr_date`, `priority`, `requesting_client`, `discipline`, `last_name`, `first_name`, `report_status`, `accessionNum`, `filler_order_num`, `sending_facility`, `label`)
 VALUES
-((SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA=(SELECT DATABASE() FROM DUAL) AND TABLE_NAME='hl7TextInfo'),'M','9055555555','A',128,'2013-06-27 12:13:29',NULL,'BOB MDCARE','HAEM1/HAEM3/CHEM4/CHEM29/REFER1','EXCELLERIS','APATIENT','F','13-999955528',NULL,NULL,NULL);
-INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`)
+((select max(lab_id) from hl7TextMessage),'M','9055555555','A',128,'2013-06-27 12:13:29',NULL,'BOB MDCARE','HAEM1/HAEM3/CHEM4/CHEM29/REFER1','EXCELLERIS','APATIENT','F','13-999955528',NULL,NULL,NULL);
+INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`, `dateModified`)
 VALUES
 ((select max(demographic_no) from demographic),
-(select max(lab_no) from hl7TextInfo),
-'HL7','0000-00-00 00:00:00');
+(select max(lab_id) from hl7TextMessage),'HL7','0000-00-00 00:00:00',NULL);
+INSERT INTO `providerLabRouting` (`provider_no`, `lab_no`, `status`, `comment`, `timestamp`, `lab_type`)
+VALUES
+('0',
+(select max(lab_id) from hl7TextMessage),'N','','2013-09-27 05:54:34','HL7');
 INSERT INTO `measurements` (`type`, `demographicNo`, `providerNo`, `dataField`, `measuringInstruction`, `comments`, `dateObserved`, `dateEntered`, `appointmentNo`)
 VALUES
 ('',(select max(demographic_no) from demographic),
@@ -867,14 +882,24 @@ VALUES
 ('BP',(select max(demographic_no) from demographic),
 '999998','140/90','sitting position','','2013-09-26 00:00:00','2013-09-26 15:29:26',0);
 -- Labs
+INSERT INTO `fileUploadCheck` (`provider_no`, `filename`, `md5sum`, `date_time`)
+VALUES
+('999998','LabUpload.IT8 HL7 2.3.xml.1380236084059','dc18cfa7f12a0b63334349e27c03ecaf','2013-09-26 15:54:44');
+INSERT INTO `hl7TextMessage` (`fileUploadCheck_id`, `message`, `type`, `serviceName`, `created`)
+VALUES 
+((select max(id) from fileUploadCheck),'TVNIfF5+XCZ8UEFUSEw3fFVWSUN8SFRUUENMSUVOVHxPU0NBUkVIUnwyMDEzMDYwNzE0MTc0N3x8T1JVXlIwMXxNREMyMDEzMDYwNzE0MTc0NzAzN3xQfDIuM3x8fEVSfEFMClBJRHx8NDQ4MDAwMDAyfExJRi00fHxJVkVeTUFSS3x8MTk0NDAxMjh8TXx8fHx8MjUwLTAwMC0wMDAyCk9SQ3xSRXx8MTEtMjIyMDc1MDU2LVVSLTF8fHx8fHx8fHw5MDkwOV5NRENBUkVeQk9CCk9CUnwxfHwxMS0yMjIwNzUwNTYtVVItMXxVUl5VcmluZSBDaGVtaXN0cnkvTWljcm98fDIwMTMwNjA3MTA0NDAwfDIwMTMwNjA3MTA0NDAwfHx8fHx8fDIwMTMwNjA3MTA0NDAwfHw5MDkwOV5NRENBUkVeQk9CfHx8fHx8MjAxMzA2MDcxMTIwMDB8fENIRU0yfEZ8fHw5MDkwOV5NRENBUkVeQk9CCk9CWHwxfFNUfDQ1MDY2LTheQ3JlYXRpbmluZXx8MTYxLjJ8dW1vbC9MfDwxNTAuMHxBfHx8Rnx8fDIwMTMwNjA3MTEyMDAwCk9CWHwyfE5NfDMzOTE0LTNeRXN0aW1hdGVkIEdGUnx8MTEzfG1ML21pbnw+PTYwfE58fHxGfHx8MjAxMzA2MDcxMTIwMDAK','PATHL7','InsideLabUploadAction','2013-09-26 15:54:44');
 INSERT INTO `hl7TextInfo` (`lab_no`, `sex`, `health_no`, `result_status`, `final_result_count`, `obr_date`, `priority`, `requesting_client`, `discipline`, `last_name`, `first_name`, `report_status`, `accessionNum`, `filler_order_num`, `sending_facility`, `label`)
 VALUES
-((SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA=(SELECT DATABASE() FROM DUAL) AND TABLE_NAME='hl7TextInfo'),'M','448000002','A',102,'2013-06-07 14:17:47',NULL,'BOB MDCARE','CHEM2','IVE','MARK','F','11-222075056',NULL,NULL,NULL);
-INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`)
+((SELECT max(lab_id) FROM hl7TextMessage),'M','448000002','A',102,'2013-06-07 14:17:47',NULL,'BOB MDCARE','CHEM2','IVE','MARK','F','11-222075056',NULL,NULL,NULL);
+INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`, `dateModified`)
 VALUES
 ((select max(demographic_no) from demographic),
-(select max(lab_no) from hl7TextInfo),
-'HL7','0000-00-00 00:00:00');
+(select max(lab_id) from hl7TextMessage),
+'HL7','0000-00-00 00:00:00',NULL);
+INSERT INTO `providerLabRouting` (`provider_no`, `lab_no`, `status`, `comment`, `timestamp`, `lab_type`)
+VALUES
+('999998',
+(select max(lab_id) from hl7TextMessage),'F','','2013-09-27 05:55:37','HL7');
 INSERT INTO `measurements` (`type`, `demographicNo`, `providerNo`, `dataField`, `measuringInstruction`, `comments`, `dateObserved`, `dateEntered`, `appointmentNo`)
 VALUES
 ('',(select max(demographic_no) from demographic),
@@ -1096,15 +1121,24 @@ INSERT INTO `casemgmt_issue_notes` (`id`, `note_id`)
 VALUES
 ((select max(id) from casemgmt_issue),(select max(note_id) from casemgmt_note));
 -- Labs
+-- don't need fileCheckUpload insert since remaining labs were grouped together
+INSERT INTO `hl7TextMessage` (`fileUploadCheck_id`, `message`, `type`, `serviceName`, `created`)
+VALUES 
+((select max(id) from fileUploadCheck),
+'TVNIfF5+XCZ8UEFUSEw3fFVWSUN8SFRUUENMSUVOVHxPU0NBUkVIUnwyMDEzMDYyMDEzMjQ0NHx8T1JVXlIwMXxBQ0MyMDEzMDYyNzEyMTMyOTEwNHxQfDIuM3x8fEVSfEFMClBJRHx8NDQ4MDAwMDAzfExJRi00fHxDSEFSTEVTXkpPQU58fDE5NTUwODI5fEZ8fHx8fDI1MC0wMDAtMDAwMwpPUkN8UkV8fDExLTIyMjA3NTA1OS1VUi0xfHx8fHx8fHx8OTA5MDleTURDQVJFXkJPQgpPQlJ8MXx8SDk5NTUzMi0zMjMyMzIzMi1IUC0xfEhQXkhlbWF0b2xvZ3kgUGFuZWx8fDIwMTMwNjIwMTI1MDAwfDIwMTMwNjIwMTI0ODAwfHx8fHx8fDIwMTMwNjIwMTI1NTAwfHw5MDkwOV5NRENBUkVeQk9CfHx8fHx8MjAxMzA2MjAxMzEwMzB8fEhBRU0xfEZ8fHw5MDkwOV5NRENBUkVeQk9CCk9CWHwxfE5NfDE0NzcxLTBeR2x1Y29zZSBGYXN0aW5nfHw0Ljl8bW1vbC9MfDMuNi01LjV8fHx8Rnx8fDIwMTMwNjIwMTMyNDQ0Ck9CWHwyfE5NfDU4NDUzLTJeT2NjdWx0IEJsb29kIEltbXVub2NoZW1pY2FsfHwzNXxuZy9tTHw8IDUwfHx8fEZ8fHwyMDEzMDYyMDEzMjQ0NApPQlh8M3xOTXw0NTQ4LTReSGVtb2dsb2JpbiBBMWN8fDYuNHwlfDQuOC02LjB8SHx8fEZ8fHwyMDEzMDYyMDEzMjQ0NApPQlh8NHxGVHwzOTQ2OS0yXkxETCBDaG9sZXN0ZXJvbHx8Mi40fG1tb2wvTHw8My40fHx8fEZ8fHwyMDEzMDYyMDEzMjQ0NAo=','PATHL7','InsideLabUploadAction','2013-09-26 15:54:44');
 INSERT INTO `hl7TextInfo` (`lab_no`, `sex`, `health_no`, `result_status`, `final_result_count`, `obr_date`, `priority`, `requesting_client`, `discipline`, `last_name`, `first_name`, `report_status`, `accessionNum`, `filler_order_num`, `sending_facility`, `label`)
 VALUES
-((SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA=(SELECT DATABASE() FROM DUAL) AND TABLE_NAME='hl7TextInfo'),'F','448000003','A',104,'2013-06-20 13:24:44',NULL,'BOB MDCARE','HAEM1','CHARLES','JOAN','F','11-222075059',NULL,NULL,NULL);
+((SELECT max(lab_id) FROM hl7TextMessage),'F','448000003','A',104,'2013-06-20 13:24:44',NULL,'BOB MDCARE','HAEM1','CHARLES','JOAN','F','11-222075059',NULL,NULL,NULL);
 -- 25 labno=27
 INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`)
 VALUES
 ((select max(demographic_no) from demographic),
-(select max(lab_no) from hl7TextInfo),
-'HL7','0000-00-00 00:00:00');
+(select max(lab_id) from hl7TextMessage),
+'HL7','0000-00-00 00:00:00',NULL);
+INSERT INTO `providerLabRouting` (`provider_no`, `lab_no`, `status`, `comment`, `timestamp`, `lab_type`)
+VALUES
+('999998',
+(select max(lab_id) from hl7TextMessage),'F','','2013-09-27 05:55:37','HL7');
 INSERT INTO `measurements` (`type`, `demographicNo`, `providerNo`, `dataField`, `measuringInstruction`, `comments`, `dateObserved`, `dateEntered`, `appointmentNo`)
 VALUES
 ('',(select max(demographic_no) from demographic),
@@ -1464,14 +1498,22 @@ VALUES
 ((select max(demographic_no) from demographic),
 '2013-09-26','PEANUT OIL',NULL,NULL,NULL,NULL,11,'anaphylaxis','45043',0,NULL,'8','3','4',NULL,NULL,0,'2013-03-05 14:55:45',NULL);
 -- Labs
+INSERT INTO `hl7TextMessage` (`fileUploadCheck_id`, `message`, `type`,`serviceName`, `created`)
+VALUES
+((select max(id) from fileUploadCheck),
+'TVNIfF5+XCZ8UEFUSEw3fFVWSUN8SFRUUENMSUVOVHxPU0NBUkVIUnwyMDEzMDYwNzE0MTc0N3x8T1JVXlIwMXxNREMyMDEzMDYwNzE0MTc0NzAzN3xQfDIuM3x8fEVSfEFMClBJRHx8NDQ4MDAwMDA1fExJRi00fHxDSEFOXkRBTEV8fDE5NzMwMTI5fEZ8fHx8fDI1MC0wMDAtMDAwNQpPUkN8UkV8fDExLTIyMjA3NTA1Ny1VUi0xfHx8fHx8fHx8OTA5MDleTURDQVJFXkJPQgpPQlJ8MXx8MTEtMjIyMDc1MDU3LVVSLTF8VVJeVXJpbmUgQ2hlbWlzdHJ5L01pY3JvfHwyMDEzMDYwNzEwNDQwMHwyMDEzMDYwNzEwNDQwMHx8fHx8fHwyMDEzMDYwNzEwNDQwMHx8OTA5MDleTURDQVJFXkJPQnx8fHx8fDIwMTMwNjA3MTEyMDAwfHxDSEVNMnxGfHx8OTA5MDleTURDQVJFXkJPQgpPQlh8MXxTVHw0NTA2Ni04XkNyZWF0aW5pbmV8fDEzMS42fHVtb2wvTHw8MTUwLjB8fHx8Rnx8fDIwMTMwNjA3MTEyMDAwCg==','PATHL7','InsideLabUploadAction','2013-09-26 15:54:44');
 INSERT INTO `hl7TextInfo` (`lab_no`, `sex`, `health_no`, `result_status`, `final_result_count`, `obr_date`, `priority`, `requesting_client`, `discipline`, `last_name`, `first_name`, `report_status`, `accessionNum`, `filler_order_num`, `sending_facility`, `label`)
 VALUES
-((SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA=(SELECT DATABASE() FROM DUAL) AND TABLE_NAME='hl7TextInfo'),'F','448000005',NULL,101,'2013-06-07 14:17:47',NULL,'BOB MDCARE','CHEM2','CHAN','DALE','F','11-222075057',NULL,NULL,NULL);
-INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`)
+((SELECT max(lab_id) FROM hl7TextMessage),'F','448000005',NULL,101,'2013-06-07 14:17:47',NULL,'BOB MDCARE','CHEM2','CHAN','DALE','F','11-222075057',NULL,NULL,NULL);
+INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`, `dateModified`)
 VALUES
 ((select max(demographic_no) from demographic),
-(select max(lab_no) from hl7TextInfo),
-'HL7','0000-00-00 00:00:00');
+(select max(lab_id) from hl7TextMessage),
+'HL7','0000-00-00 00:00:00',NULL);
+INSERT INTO `providerLabRouting` (`provider_no`, `lab_no`, `status`, `comment`, `timestamp`, `lab_type`)
+VALUES
+('999998',
+(select max(lab_id) from hl7TextMessage),'F','','2013-09-27 05:55:37','HL7');
 INSERT INTO `measurements` (`type`, `demographicNo`, `providerNo`, `dataField`, `measuringInstruction`, `comments`, `dateObserved`, `dateEntered`, `appointmentNo`)
 VALUES
 ('',(select max(demographic_no) from demographic),
@@ -1855,14 +1897,22 @@ INSERT INTO `casemgmt_issue_notes` (`id`, `note_id`)
 VALUES
 ((select max(id) from casemgmt_issue),(select max(note_id) from casemgmt_note));
 -- Labs
+INSERT INTO `hl7TextMessage` (`fileUploadCheck_id`, `message`, `type`, `serviceName`, `created`)
+VALUES
+((select max(id) from fileUploadCheck),
+'TVNIfF5+XCZ8UEFUSEw3fFVWSUN8SFRUUENMSUVOVHxPU0NBUkVIUnwyMDEzMDYwNzE0MTc0N3x8T1JVXlIwMXxNREMyMDEzMDYwNzE0MTc0NzAzN3xQfDIuM3x8fEVSfEFMClBJRHx8NDQ4MDAwMDA4fExJRi00fHxUSE9NQVNeSklMTHx8MTkyNDA0Mjh8Rnx8fHx8MjUwLTAwMC0wMDA4Ck9SQ3xSRXx8MTEtMjIyMDc1MDU4LVVSLTF8fHx8fHx8fHw5MDkwOV5NRENBUkVeQk9CCk9CUnwxfHwxMS0yMjIwNzUwNTgtVVItMXxVUl5VcmluZSBDaGVtaXN0cnkvTWljcm98fDIwMTMwNjA3MTA0NDAwfDIwMTMwNjA3MTA0NDAwfHx8fHx8fDIwMTMwNjA3MTA0NDAwfHw5MDkwOV5NRENBUkVeQk9CfHx8fHx8MjAxMzA2MDcxMTIwMDB8fENIRU0yfEZ8fHw5MDkwOV5NRENBUkVeQk9CCk9CWHwxfFNUfDQ1MDY2LTheQ3JlYXRpbmluZXx8MTU4LjR8dW1vbC9MfDwxNTAuMHxBfHx8Rnx8fDIwMTMwNjA3MTEyMDAwCg==','PATHL7','InsideLabUploadAction','2013-09-26 15:54:44');
 INSERT INTO `hl7TextInfo` (`lab_no`, `sex`, `health_no`, `result_status`, `final_result_count`, `obr_date`, `priority`, `requesting_client`, `discipline`, `last_name`, `first_name`, `report_status`, `accessionNum`, `filler_order_num`, `sending_facility`, `label`)
 VALUES
-((SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA=(SELECT DATABASE() FROM DUAL) AND TABLE_NAME='hl7TextInfo'),'F','448000008','A',101,'2013-06-07 14:17:47',NULL,'BOB MDCARE','CHEM2','THOMAS','JILL','F','11-222075058',NULL,NULL,NULL);
-INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`)
+((SELECT max(lab_id) from hl7TextMessage),'F','448000008','A',101,'2013-06-07 14:17:47',NULL,'BOB MDCARE','CHEM2','THOMAS','JILL','F','11-222075058',NULL,NULL,NULL);
+INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`, `dateModified`)
 VALUES
 ((select max(demographic_no) from demographic),
-(select max(lab_no) from hl7TextInfo),
-'HL7','0000-00-00 00:00:00');
+(select max(lab_id) from hl7TextMessage),
+'HL7','0000-00-00 00:00:00',NULL);
+INSERT INTO `providerLabRouting` (`provider_no`, `lab_no`, `status`, `comment`, `timestamp`, `lab_type`)
+VALUES
+('999998',
+(select max(lab_id) from hl7TextMessage),'F','','2013-09-27 05:55:37','HL7');
 INSERT INTO `measurements` (`type`, `demographicNo`, `providerNo`, `dataField`, `measuringInstruction`, `comments`, `dateObserved`, `dateEntered`, `appointmentNo`)
 VALUES
 ('',(select max(demographic_no) from demographic),
@@ -2007,14 +2057,23 @@ VALUES
 ('WT',(select max(demographic_no) from demographic),
 '999998','85','in kg','','2013-09-26 00:00:00','2013-09-26 15:30:49',0);
 -- Labs
+INSERT INTO `hl7TextMessage` (`fileUploadCheck_id`, `message`, `type`,`serviceName`, `created`)
+VALUES
+((select max(id) from fileUploadCheck),
+'TVNIfF5+XCZ8UEFUSEw3fFVWSUN8SFRUUENMSUVOVHxPU0NBUkVIUnwyMDEzMDYyMDEzMjQ0NHx8T1JVXlIwMXxBQ0MyMDEzMDYyNzEyMTMyOTEwNHxQfDIuM3
+x8fEVSfEFMClBJRHx8NDQ4MDAwMDEwfExJRi00fHxTVUdBUl5NQVJZfHwxOTUwMDIxNHxGfHx8fHwyNTAtMDAwLTAwMTAKT1JDfFJFfHwxMS0yMjIwNzUwNjAtVVItMXx8fHx8fHx8fDkwOTA5Xk1EQ0FSRV5CT0IKT0JSfDF8fEg5OTU1MzItMzIzMjMyMzMtSFAtMXxIUF5IZW1hdG9sb2d5IFBhbmVsfHwyMDEzMDYyMDEyNTAwMHwyMDEzMDYyMDEyNDgwMHx8fHx8fHwyMDEzMDYyMDEyNTUwMHx8OTA5MDleTURDQVJFXkJPQnx8fHx8fDIwMTMwNjIwMTMxMDMwfHxIQUVNMXxGfHx8OTA5MDleTURDQVJFXkJPQgpPQlh8MXxOTXwxNDc3MS0wXkdsdWNvc2UgRmFzdGluZ3x8NS4xfG1tb2wvTHwzLjYtNS41fHx8fEZ8fHwyMDEzMDYyMDEzMjQ0NApPQlh8MnxOTXw1ODQ1My0yXk9jY3VsdCBCbG9vZCBJbW11bm9jaGVtaWNhbHx8Mzh8bmcvbUx8PCA1MHx8fHxGfHx8MjAxMzA2MjAxMzI0NDQKT0JYfDN8Tk18NDU0OC00XkhlbW9nbG9iaW4gQTFjfHw2LjF8JXw0LjgtNi4wfEh8fHxGfHx8MjAxMzA2MjAxMzI0NDQKT0JYfDR8RlR8Mzk0NjktMl5MREwgQ2hvbGVzdGVyb2x8fDIuOXxtbW9sL0x8PDMuNHx8fHxGfHx8MjAxMzA2MjAxMzI0NDQKT0JYfDF8Tk18MTc1MS03XkFsYnVtaW58fDQ1fGcvTHw2ODd8Tnx8fEZ8fHwyMDEzMDYyMDEzMjQ0NAo=','PATHL7','InsideLabUploadAction','2013-09-26 15:54:44');
 INSERT INTO `hl7TextInfo` (`lab_no`, `sex`, `health_no`, `result_status`, `final_result_count`, `obr_date`, `priority`, `requesting_client`, `discipline`, `last_name`, `first_name`, `report_status`, `accessionNum`, `filler_order_num`, `sending_facility`, `label`)
 VALUES
-((SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA=(SELECT DATABASE() FROM DUAL) AND TABLE_NAME='hl7TextInfo'),'F','448000010','A',105,'2013-06-20 13:24:44',NULL,'BOB MDCARE','HAEM1','SUGAR','MARY','F','11-222075060',NULL,NULL,NULL);
-INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`)
+((SELECT max(lab_id) from hl7TextMessage),'F','448000010','A',105,'2013-06-20 13:24:44',NULL,'BOB MDCARE','HAEM1','SUGAR','MARY','F','11-222075060',NULL,NULL,NULL);
+INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`, `dateModified`)
 VALUES
 ((select max(demographic_no) from demographic),
 (select max(lab_no) from hl7TextInfo),
-'HL7','0000-00-00 00:00:00');
+'HL7','0000-00-00 00:00:00',NULL);
+INSERT INTO `providerLabRouting` (`provider_no`, `lab_no`, `status`, `comment`, `timestamp`, `lab_type`)
+VALUES
+('999998',
+(select max(lab_id) from hl7TextMessage),'F','','2013-09-27 05:55:37','HL7');
 INSERT INTO `measurements` (`type`, `demographicNo`, `providerNo`, `dataField`, `measuringInstruction`, `comments`, `dateObserved`, `dateEntered`, `appointmentNo`)
 VALUES
 ('',(select max(demographic_no) from demographic),
