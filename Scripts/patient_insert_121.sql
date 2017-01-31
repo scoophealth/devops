@@ -185,10 +185,10 @@ VALUES
 INSERT INTO `hl7TextInfo` (`lab_no`, `sex`, `health_no`, `result_status`, `final_result_count`, `obr_date`, `priority`, `requesting_client`, `discipline`, `last_name`, `first_name`, `report_status`, `accessionNum`, `filler_order_num`, `sending_facility`, `label`)
 VALUES
 ((select max(lab_id) from hl7TextMessage),'M','9055555555','A',128,'2013-06-27 12:13:29',NULL,'BOB MDCARE','HAEM1/HAEM3/CHEM4/CHEM29/REFER1','EXCELLERIS','APATIENT','F','13-999955528',NULL,NULL,NULL);
-INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`, `dateModified`)
+INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`)
 VALUES
 ((select max(demographic_no) from demographic),
-(select max(lab_id) from hl7TextMessage),'HL7','0000-00-00 00:00:00',NULL);
+(select max(lab_id) from hl7TextMessage),'HL7','0000-00-00 00:00:00');
 INSERT INTO `providerLabRouting` (`provider_no`, `lab_no`, `status`, `comment`, `timestamp`, `lab_type`)
 VALUES
 ('0',
@@ -891,11 +891,11 @@ VALUES
 INSERT INTO `hl7TextInfo` (`lab_no`, `sex`, `health_no`, `result_status`, `final_result_count`, `obr_date`, `priority`, `requesting_client`, `discipline`, `last_name`, `first_name`, `report_status`, `accessionNum`, `filler_order_num`, `sending_facility`, `label`)
 VALUES
 ((SELECT max(lab_id) FROM hl7TextMessage),'M','448000002','A',102,'2013-06-07 14:17:47',NULL,'BOB MDCARE','CHEM2','IVE','MARK','F','11-222075056',NULL,NULL,NULL);
-INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`, `dateModified`)
+INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`)
 VALUES
 ((select max(demographic_no) from demographic),
 (select max(lab_id) from hl7TextMessage),
-'HL7','0000-00-00 00:00:00',NULL);
+'HL7','0000-00-00 00:00:00');
 INSERT INTO `providerLabRouting` (`provider_no`, `lab_no`, `status`, `comment`, `timestamp`, `lab_type`)
 VALUES
 ('999998',
@@ -1134,7 +1134,7 @@ INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `creat
 VALUES
 ((select max(demographic_no) from demographic),
 (select max(lab_id) from hl7TextMessage),
-'HL7','0000-00-00 00:00:00',NULL);
+'HL7','0000-00-00 00:00:00');
 INSERT INTO `providerLabRouting` (`provider_no`, `lab_no`, `status`, `comment`, `timestamp`, `lab_type`)
 VALUES
 ('999998',
@@ -1505,11 +1505,11 @@ VALUES
 INSERT INTO `hl7TextInfo` (`lab_no`, `sex`, `health_no`, `result_status`, `final_result_count`, `obr_date`, `priority`, `requesting_client`, `discipline`, `last_name`, `first_name`, `report_status`, `accessionNum`, `filler_order_num`, `sending_facility`, `label`)
 VALUES
 ((SELECT max(lab_id) FROM hl7TextMessage),'F','448000005',NULL,101,'2013-06-07 14:17:47',NULL,'BOB MDCARE','CHEM2','CHAN','DALE','F','11-222075057',NULL,NULL,NULL);
-INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`, `dateModified`)
+INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`)
 VALUES
 ((select max(demographic_no) from demographic),
 (select max(lab_id) from hl7TextMessage),
-'HL7','0000-00-00 00:00:00',NULL);
+'HL7','0000-00-00 00:00:00');
 INSERT INTO `providerLabRouting` (`provider_no`, `lab_no`, `status`, `comment`, `timestamp`, `lab_type`)
 VALUES
 ('999998',
@@ -1904,11 +1904,11 @@ VALUES
 INSERT INTO `hl7TextInfo` (`lab_no`, `sex`, `health_no`, `result_status`, `final_result_count`, `obr_date`, `priority`, `requesting_client`, `discipline`, `last_name`, `first_name`, `report_status`, `accessionNum`, `filler_order_num`, `sending_facility`, `label`)
 VALUES
 ((SELECT max(lab_id) from hl7TextMessage),'F','448000008','A',101,'2013-06-07 14:17:47',NULL,'BOB MDCARE','CHEM2','THOMAS','JILL','F','11-222075058',NULL,NULL,NULL);
-INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`, `dateModified`)
+INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`)
 VALUES
 ((select max(demographic_no) from demographic),
 (select max(lab_id) from hl7TextMessage),
-'HL7','0000-00-00 00:00:00',NULL);
+'HL7','0000-00-00 00:00:00');
 INSERT INTO `providerLabRouting` (`provider_no`, `lab_no`, `status`, `comment`, `timestamp`, `lab_type`)
 VALUES
 ('999998',
@@ -2065,11 +2065,11 @@ x8fEVSfEFMClBJRHx8NDQ4MDAwMDEwfExJRi00fHxTVUdBUl5NQVJZfHwxOTUwMDIxNHxGfHx8fHwyNT
 INSERT INTO `hl7TextInfo` (`lab_no`, `sex`, `health_no`, `result_status`, `final_result_count`, `obr_date`, `priority`, `requesting_client`, `discipline`, `last_name`, `first_name`, `report_status`, `accessionNum`, `filler_order_num`, `sending_facility`, `label`)
 VALUES
 ((SELECT max(lab_id) from hl7TextMessage),'F','448000010','A',105,'2013-06-20 13:24:44',NULL,'BOB MDCARE','HAEM1','SUGAR','MARY','F','11-222075060',NULL,NULL,NULL);
-INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`, `dateModified`)
+INSERT INTO `patientLabRouting` (`demographic_no`, `lab_no`, `lab_type`,  `created`)
 VALUES
 ((select max(demographic_no) from demographic),
 (select max(lab_no) from hl7TextInfo),
-'HL7','0000-00-00 00:00:00',NULL);
+'HL7','0000-00-00 00:00:00');
 INSERT INTO `providerLabRouting` (`provider_no`, `lab_no`, `status`, `comment`, `timestamp`, `lab_type`)
 VALUES
 ('999998',
