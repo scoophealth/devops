@@ -2192,3 +2192,5 @@ VALUES
  '2013-09-26','2013-09-26 00:00:00','A','250','icd9',0,NULL),
 ((select max(demographic_no) from demographic),
  '2013-09-26','2013-09-26 00:00:00','A','585','icd9',0,NULL);
+-- Adding billing to oscardoc
+update provider set ohip_no='123456' where provider_no='999998';
